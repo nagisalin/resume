@@ -1,43 +1,21 @@
 {
   "files": {
-    "main.css": "/resume/static/css/main.222157e6.css",
-    "main.js": "/resume/static/js/main.23021e59.js",
+    "main.css": "/resume/static/css/main.b09f5943.css",
+    "main.js": "/resume/static/js/main.fa6b3f32.js",
     "static/media/kioskImg.png": "/resume/static/media/kioskImg.32700f70a9c1677bd638.png",
     "static/media/aiParkImg.png": "/resume/static/media/aiParkImg.8b81c0f704c31bcd6927.png",
-    "static/media/exerciseEditorPage.png": "/resume/static/media/exerciseEditorPage.3caa26dc0d3703224176.png",
-    "static/media/selectAllWordB.png": "/resume/static/media/selectAllWordB.6c5d270dbba9973ff785.png",
-    "static/media/selectAllWordA.png": "/resume/static/media/selectAllWordA.e61c3d4e4f62cf320bb0.png",
-    "static/media/clickModalOutSide.png": "/resume/static/media/clickModalOutSide.67c5cf34b2807d7be983.png",
-    "static/media/backgroundImg.svg": "/resume/static/media/backgroundImg.5155fd90bb81004a5fc9.svg",
     "static/media/oaImg.png": "/resume/static/media/oaImg.06140f20eec41de3eb00.png",
-    "static/media/calendarPage.png": "/resume/static/media/calendarPage.198b22e3100f38b3d78f.png",
     "static/media/loginPage.png": "/resume/static/media/loginPage.f91f27839c458fb0a888.png",
-    "static/media/login-carousel-cat-3.png": "/resume/static/media/login-carousel-cat-3.9b80e05e028f17d9e95f.png",
-    "static/media/login-carousel-cat-2.png": "/resume/static/media/login-carousel-cat-2.88df8fd34e2d0893d939.png",
-    "static/media/login-carousel-cat-1.png": "/resume/static/media/login-carousel-cat-1.683f4e2dfb2cf2055b4f.png",
     "static/media/chartPage.png": "/resume/static/media/chartPage.5ea16c15b86f8d3c11ac.png",
     "static/media/avatar2.jpeg": "/resume/static/media/avatar2.9e2e52575d321c8e218b.jpeg",
     "static/media/listPage.png": "/resume/static/media/listPage.b846032cb64956c1c980.png",
-    "static/media/visiblePassword.png": "/resume/static/media/visiblePassword.7e88617ff9933cb9920c.png",
-    "static/media/Logo.png": "/resume/static/media/Logo.7d9cd0561b031ef1115d.png",
     "static/media/avatar1.png": "/resume/static/media/avatar1.5cdd6217ca974cafec1a.png",
-    "static/media/login-logo.png": "/resume/static/media/login-logo.b165af1fda2200b51365.png",
-    "static/media/hideInput.svg": "/resume/static/media/hideInput.811252ef6729c91ac416506c7ded5250.svg",
-    "static/media/slick.svg": "/resume/static/media/slick.2630a3e3eab21c607e21.svg",
-    "static/media/showInput.svg": "/resume/static/media/showInput.4be7249c2f71a1d62b202beead2ca405.svg",
-    "static/media/slick.eot": "/resume/static/media/slick.a4e97f5a2a64f0ab1323.eot",
-    "static/media/slick.ttf": "/resume/static/media/slick.c94f7671dcc99dce43e2.ttf",
-    "static/media/slick.woff": "/resume/static/media/slick.295183786cd8a1389865.woff",
-    "static/media/arrowDown.svg": "/resume/static/media/arrowDown.cfb0e5f8cdbf926356a55127170a5d65.svg",
-    "static/media/hamburgerMenu.svg": "/resume/static/media/hamburgerMenu.bcfcbd531f0733028e7eaf972d1800f2.svg",
     "index.html": "/resume/index.html",
-    "static/media/arrowUp.svg": "/resume/static/media/arrowUp.c379e861ce6f52b30dbdcac2d6ac3c47.svg",
-    "static/media/plus-white.svg": "/resume/static/media/plus-white.3004a9ba4a63f11ff418fe5d860510c6.svg",
-    "main.222157e6.css.map": "/resume/static/css/main.222157e6.css.map",
-    "main.23021e59.js.map": "/resume/static/js/main.23021e59.js.map"
+    "main.b09f5943.css.map": "/resume/static/css/main.b09f5943.css.map",
+    "main.fa6b3f32.js.map": "/resume/static/js/main.fa6b3f32.js.map"
   },
   "entrypoints": [
-    "static/css/main.222157e6.css",
-    "static/js/main.23021e59.js"
+    "static/css/main.b09f5943.css",
+    "static/js/main.fa6b3f32.js"
   ]
 }
