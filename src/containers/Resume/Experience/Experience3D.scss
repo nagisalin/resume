@@ -1,0 +1,127 @@
+.Experience3D {
+	position: relative;
+	background: #05060a;
+
+	.Exp3D-sticky {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.Exp3D-canvas {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		transform: translateZ(0);
+		will-change: transform;
+		canvas { display: block; width: 100% !important; height: 100% !important; }
+	}
+
+	// 職涯面板（置中偏下）
+	.Exp3D-panel {
+		position: absolute;
+		left: 50%;
+		bottom: 12vh;
+		transform: translateX(-50%);
+		z-index: 2;
+		width: min(640px, 88vw);
+		text-align: center;
+		color: #fff;
+		transition: opacity 0.2s linear;
+		pointer-events: none;
+
+		.Exp3D-panel-year {
+			font-size: 40px;
+			font-weight: 900;
+			color: var(--clr);
+			text-shadow: 0 0 30px color-mix(in srgb, var(--clr) 55%, transparent);
+			letter-spacing: 1px;
+		}
+		.Exp3D-panel-kicker {
+			font-size: 16px;
+			letter-spacing: 4px;
+			color: var(--clr);
+			margin-bottom: 8px;
+		}
+		.Exp3D-panel-role {
+			margin-top: 8px;
+			font-size: 26px;
+			font-weight: 800;
+		}
+		.Exp3D-panel-org {
+			margin-top: 6px;
+			font-size: 16px;
+			color: #9aa0b2;
+		}
+		.Exp3D-panel-desc {
+			margin-top: 16px;
+			white-space: pre-wrap;
+			font-size: 16px;
+			line-height: 1.8;
+			color: #d8dbe6;
+		}
+
+		&.is-value {
+			width: min(720px, 90vw);
+			bottom: 50%;
+			transform: translate(-50%, 50%);
+			background: rgba(10, 12, 18, 0.66);
+			border: 1px solid color-mix(in srgb, var(--clr) 45%, transparent);
+			border-radius: 18px;
+			padding: 32px 36px;
+			backdrop-filter: blur(8px);
+
+			.Exp3D-panel-role {
+				font-size: 30px;
+				color: var(--clr);
+			}
+			.Exp3D-panel-desc { text-align: left; font-size: 16px; }
+		}
+	}
+
+	// ---------- 手機版：暗色卡片 ----------
+	&.Experience3D--mobile {
+		padding: 80px 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 22px;
+
+		.Exp3D-m-title {
+			text-align: center;
+			font-size: 15px;
+			letter-spacing: 6px;
+			color: #9fd8ff;
+			margin-bottom: 10px;
+		}
+		.Exp3D-m-card {
+			background: rgba(255, 255, 255, 0.04);
+			border: 1px solid color-mix(in srgb, var(--clr) 45%, transparent);
+			border-left: 5px solid var(--clr);
+			border-radius: 14px;
+			padding: 20px 20px;
+			color: #e3e6ef;
+
+			.Exp3D-m-year { font-size: 20px; font-weight: 900; color: var(--clr); }
+			.Exp3D-m-role { margin-top: 6px; font-size: 19px; font-weight: 800; color: #fff; }
+			.Exp3D-m-org { margin-top: 4px; font-size: 14px; color: #9aa0b2; }
+			.Exp3D-m-desc { margin-top: 12px; white-space: pre-wrap; font-size: 15px; line-height: 1.7; }
+
+			&.is-value {
+				background: rgba(255, 209, 102, 0.06);
+				.Exp3D-m-role { color: var(--clr); }
+			}
+		}
+	}
+}
+
+@media (max-width: 760px) {
+	.Experience3D {
+		.Exp3D-panel {
+			.Exp3D-panel-year { font-size: 30px; }
+			.Exp3D-panel-role { font-size: 21px; }
+			.Exp3D-panel-desc { font-size: 14px; }
+			&.is-value { padding: 22px 20px; .Exp3D-panel-role { font-size: 23px; } }
+		}
+	}
+}

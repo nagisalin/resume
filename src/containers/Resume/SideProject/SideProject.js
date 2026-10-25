@@ -92,7 +92,6 @@ Carousel 套件處理右側輪播圖，因此當時由我研究官方 Doc 引入
 可點選註冊或忘記密碼進行基本帳戶功能使用，
 亦或利用 trial account 驗證登入
 (成功登入我這邊是做跳出一個 alert 示範😂)`}
-					url="./login"
 				/>
 
 				<DemoBlock
@@ -116,7 +115,6 @@ const getStandardDeviation = (data, average) => {
 }
 
 大概像這樣的計算QQ`}
-					url="./chart"
 				/>
 
 				<DemoBlock
@@ -128,7 +126,6 @@ const getStandardDeviation = (data, average) => {
 
 這邊有串 FireStore 的後端實作資料庫，
 並且實作基礎 CRUD，也有簡易搜尋功能。`}
-					url="./list"
 				/>
 			</div>
 		</section>

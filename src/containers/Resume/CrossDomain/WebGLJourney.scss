@@ -1,0 +1,105 @@
+.WebGLJourney {
+	position: relative;
+	background: #05060a;
+
+	.WebGLJourney-sticky {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.WebGLJourney-canvas {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		transform: translateZ(0); // 固定在獨立合成層，避免捲動進出時重建圖層
+		will-change: transform;
+
+		canvas {
+			display: block;
+			width: 100% !important;
+			height: 100% !important;
+		}
+	}
+
+	// 文字面板（固定在右下，隨飛行進度淡入淡出）
+	.WebGLJourney-panel {
+		position: absolute;
+		right: 6vw;
+		bottom: 14vh;
+		z-index: 2;
+		width: min(440px, 80vw);
+		padding: 26px 30px;
+		border-radius: 18px;
+		background: linear-gradient(180deg, rgba(8, 10, 16, 0.55), rgba(8, 10, 16, 0.78));
+		border: 1px solid color-mix(in srgb, var(--clr) 45%, transparent);
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px color-mix(in srgb, var(--clr) 25%, transparent);
+		backdrop-filter: blur(8px);
+		transition: opacity 0.2s linear;
+
+		.WebGLJourney-panel-en {
+			font-size: 14px;
+			letter-spacing: 6px;
+			color: var(--clr);
+		}
+
+		.WebGLJourney-panel-tag {
+			display: inline-block;
+			margin-top: 12px;
+			padding: 5px 16px;
+			border-radius: 999px;
+			background: var(--clr);
+			color: #06070c;
+			font-size: 14px;
+			font-weight: 800;
+		}
+
+		.WebGLJourney-panel-title {
+			margin-top: 14px;
+			font-size: 26px;
+			font-weight: 900;
+			color: #fff;
+		}
+
+		.WebGLJourney-panel-desc {
+			margin-top: 14px;
+			white-space: pre-wrap;
+			font-size: 16px;
+			font-weight: 400;
+			line-height: 1.75;
+			color: #dce0ec;
+		}
+	}
+
+	.WebGLJourney-dots {
+		position: absolute;
+		left: 50%;
+		bottom: 30px;
+		transform: translateX(-50%);
+		z-index: 3;
+		display: flex;
+		gap: 14px;
+
+		.WebGLJourney-dot {
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			transition: transform 0.25s ease, background 0.25s ease;
+		}
+	}
+}
+
+@media (max-width: 900px) {
+	.WebGLJourney {
+		.WebGLJourney-panel {
+			right: 50%;
+			transform: translateX(50%);
+			bottom: 10vh;
+			text-align: left;
+
+			.WebGLJourney-panel-title { font-size: 22px; }
+			.WebGLJourney-panel-desc { font-size: 14px; }
+		}
+	}
+}

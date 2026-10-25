@@ -1,0 +1,176 @@
+// ---------- 開場 ----------
+.CrossDomainIntro {
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	background:
+		radial-gradient(70% 60% at 50% 40%, color-mix(in srgb, var(--lavender_color) 55%, transparent), transparent 70%),
+		#0f1017;
+	color: #fff;
+
+	.CrossDomainIntro-inner {
+		max-width: 820px;
+		padding: 0 24px;
+
+		.CrossDomainIntro-kicker {
+			font-size: 16px;
+			letter-spacing: 8px;
+			color: var(--lavender_color);
+			margin-bottom: 18px;
+		}
+
+		.CrossDomainIntro-title {
+			font-size: 56px;
+			font-weight: 900;
+		}
+
+		.CrossDomainIntro-sub {
+			margin-top: 24px;
+			white-space: pre-wrap;
+			font-size: 20px;
+			font-weight: 400;
+			line-height: 1.8;
+			color: #c8ccda;
+		}
+
+		.CrossDomainIntro-hint {
+			margin-top: 48px;
+			font-size: 16px;
+			color: rgba(255, 255, 255, 0.6);
+			animation: cd-bounce 1.8s ease-in-out infinite;
+		}
+	}
+}
+
+@keyframes cd-bounce {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(10px); }
+}
+
+// ---------- 終點宣言 ----------
+.CrossDomainFinale {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 100px 24px;
+	background:
+		radial-gradient(80% 60% at 50% 60%, color-mix(in srgb, var(--lavender_color) 35%, transparent), transparent 70%),
+		#0f1017;
+	color: #fff;
+
+	.CrossDomainFinale-inner {
+		max-width: 760px;
+		text-align: center;
+		opacity: 0;
+		transform: translateY(40px);
+		transition: opacity 0.9s ease, transform 0.9s ease;
+
+		&.is-visible {
+			opacity: 1;
+			transform: none;
+		}
+
+		.CrossDomainFinale-text {
+			white-space: pre-wrap;
+			font-size: 21px;
+			font-weight: 400;
+			line-height: 1.9;
+			color: #e3e6ef;
+		}
+
+		.CrossDomainFinale-sign {
+			margin-top: 36px;
+			font-size: 20px;
+			font-weight: 800;
+			color: var(--lavender_color);
+		}
+	}
+}
+
+// ---------- 手機版：淡入卡片（不用穿門動畫）----------
+.CrossDomainMobile {
+	background: #0f1017;
+	padding: 80px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	.CrossDomainMobile-Case {
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid color-mix(in srgb, var(--door-clr) 55%, transparent);
+		border-left: 5px solid var(--door-clr);
+		border-radius: 16px;
+		padding: 24px 22px;
+		color: #e3e6ef;
+
+		.CrossDomainMobile-Case-Scene {
+			background: #0b0d14;
+			border-radius: 12px;
+			padding: 10px;
+			margin-bottom: 16px;
+
+			.RoadScene-svg {
+				width: 100%;
+				height: auto;
+				display: block;
+			}
+		}
+
+		.CrossDomainMobile-Case-Label {
+			font-size: 15px;
+			font-weight: 800;
+			letter-spacing: 2px;
+			color: var(--door-clr);
+		}
+
+		.CrossDomainMobile-Case-Tag {
+			display: inline-block;
+			margin-top: 10px;
+			padding: 4px 12px;
+			border-radius: 999px;
+			background: var(--door-clr);
+			color: #0d0f16;
+			font-size: 13px;
+			font-weight: 700;
+		}
+
+		.CrossDomainMobile-Case-Title {
+			margin-top: 12px;
+			font-size: 21px;
+			font-weight: 800;
+			color: #fff;
+		}
+
+		.CrossDomainMobile-Case-Desc {
+			margin-top: 12px;
+			white-space: pre-wrap;
+			font-size: 15px;
+			line-height: 1.7;
+		}
+	}
+}
+
+@media (max-width: 640px) {
+	.CrossDomainIntro {
+		.CrossDomainIntro-inner {
+			.CrossDomainIntro-title {
+				font-size: 38px;
+			}
+
+			.CrossDomainIntro-sub {
+				font-size: 16px;
+			}
+		}
+	}
+
+	.CrossDomainFinale {
+		.CrossDomainFinale-inner {
+			.CrossDomainFinale-text {
+				font-size: 17px;
+			}
+		}
+	}
+}

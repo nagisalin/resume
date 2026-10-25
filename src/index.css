@@ -9,6 +9,7 @@ body {
 	--lightYellow_color: #ffeaa7;
 	--skyBlue_color: #17c0eb;
 	--pink_color: #fd79a8;
+	--lavender_color: #a29bfe;
 
 	&::-webkit-scrollbar {
 		width: 0; /* 設置滾動條寬度 */

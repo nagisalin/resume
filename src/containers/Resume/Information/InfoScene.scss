@@ -1,0 +1,144 @@
+.InfoScene {
+	position: relative;
+	height: 320vh;
+	background: #05060a;
+
+	.InfoScene-sticky {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.InfoScene-canvas {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		transform: translateZ(0);
+		will-change: transform;
+
+		canvas { display: block; width: 100% !important; height: 100% !important; }
+	}
+
+	// 共用：置中覆蓋層
+	.InfoScene-hero,
+	.InfoScene-panel {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		padding: 0 24px;
+		pointer-events: none;
+		color: #fff;
+	}
+
+	// ---- 第一幕 身份 ----
+	.InfoScene-hero {
+		.InfoScene-avatars {
+			display: flex;
+			gap: 16px;
+			align-items: center;
+		}
+		.InfoScene-avatar {
+			width: 96px;
+			height: 96px;
+			border-radius: 50%;
+			border: 2px solid #58d68d;
+			box-shadow: 0 0 30px rgba(88, 214, 141, 0.5);
+			object-fit: cover;
+		}
+		.InfoScene-avatar--slime {
+			background: #fff;
+		}
+		.InfoScene-name {
+			margin-top: 18px;
+			font-size: 52px;
+			font-weight: 900;
+			letter-spacing: 2px;
+		}
+		.InfoScene-role {
+			margin-top: 8px;
+			font-size: 24px;
+			font-weight: 700;
+			color: #58d68d;
+			text-shadow: 0 0 20px rgba(88, 214, 141, 0.5);
+		}
+		.InfoScene-tagline {
+			margin-top: 18px;
+			max-width: 620px;
+			white-space: pre-wrap;
+			font-size: 16px;
+			line-height: 1.7;
+			color: #c8ccda;
+		}
+		.InfoScene-contact {
+			margin-top: 22px;
+			font-size: 15px;
+			color: #9aa0b2;
+		}
+		.InfoScene-scrollhint {
+			margin-top: 40px;
+			font-size: 15px;
+			color: rgba(255, 255, 255, 0.55);
+			animation: info-bounce 1.8s ease-in-out infinite;
+		}
+	}
+
+	@keyframes info-bounce {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(10px); }
+	}
+
+	// ---- 覆蓋面板（自介 / 技能）----
+	.InfoScene-panel {
+		.InfoScene-panel-kicker {
+			font-size: 15px;
+			letter-spacing: 6px;
+			color: #58d68d;
+			margin-bottom: 18px;
+		}
+		.InfoScene-panel-text {
+			max-width: 680px;
+			white-space: pre-wrap;
+			font-size: 19px;
+			line-height: 1.9;
+			color: #e3e6ef;
+		}
+	}
+
+	.InfoScene-skills {
+		.InfoScene-skillgrid {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(200px, 1fr));
+			gap: 18px;
+			max-width: 860px;
+		}
+		.InfoScene-skillcard {
+			background: rgba(16, 22, 20, 0.6);
+			border: 1px solid rgba(88, 214, 141, 0.4);
+			border-radius: 14px;
+			padding: 18px 20px;
+			text-align: left;
+			backdrop-filter: blur(6px);
+
+			.InfoScene-skillcard-t { font-size: 18px; font-weight: 800; color: #fff; }
+			.InfoScene-skillcard-d { margin-top: 8px; font-size: 14px; line-height: 1.6; color: #b9c0cf; }
+		}
+	}
+}
+
+@media (max-width: 760px) {
+	.InfoScene {
+		.InfoScene-hero {
+			.InfoScene-name { font-size: 36px; }
+			.InfoScene-role { font-size: 19px; }
+			.InfoScene-tagline { font-size: 14px; }
+		}
+		.InfoScene-panel .InfoScene-panel-text { font-size: 16px; }
+		.InfoScene-skills .InfoScene-skillgrid { grid-template-columns: 1fr; max-width: 360px; }
+	}
+}

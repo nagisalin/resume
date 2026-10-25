@@ -21,14 +21,14 @@ const Information = () => {
 						<img src={Avatar2} alt="Avatar2" className="avatarImg" />
 					</div>
 					<p className="name">洪世桓</p>
-					<p className="job">Front-End Engineer</p>
+					<p className="job">ADE · Any-Domain Engineer</p>
+					<p style={{ fontSize: "15px", marginTop: "-6px", color: "#555", whiteSpace: "pre-wrap" }}>{`「哪都能做」工程師
+這年頭 vibe coding，工程師好像都被逼成 Any-Domain ——
+什麼都得做得出來 XD`}</p>
 					<p>🏠  Taiwan / Taipei</p>
 					<p>📬  getsulin@gmail.com</p>
 					<p>📞  0921-512-668</p>
 					<p>🏫  國立臺灣師範大學 數學系 畢</p>
-
-					<p style={{ marginTop: '16px', fontSize: "16px"}}>※履歷非 ChatGPT 生成聲明</p>
-					<p style={{ fontSize: "16px" }}>　現在是不是都要附註這句? XD</p>
 				</div>
 
 				<div className="information-info-intro">
@@ -42,39 +42,91 @@ const Information = () => {
 
 				<div className="underline w90"></div>
 
+				<div style={{ margin: "8px 0 24px", fontSize: "16px", fontWeight: 500, lineHeight: 1.6 }}>
+					{`以下不按「熟練度」排，按「我什麼時候進到這個領域、做出了什麼」排 ——
+因為在 AI 能幫你補語法的現在，廣度（敢進、進得去、做得出來）比單點深度更難假裝。`}
+				</div>
+
 				<div className="information-bottom-skill">
 					<div className="information-bottom-skill-items">
 						<ul className="information-bottom-skill-item-title">
-							<li>React.js/Hook</li>
+							<li>前端 React / Vue</li>
 						</ul>
 
 						<div className="information-bottom-skill-item-text">
-							{`過去工作使用 classComponent 方式撰寫
-目前皆改以 hook 建立新專案
-相關詳細內容可參考 作品應用
-曾有接案從頭使用 webpack 並處理 RWD 經驗`}
+							{`本行。早期 classComponent，現以 Hook 建新專案。
+2024 起獨力完成多套企業後台 / Dashboard，
+含 i18n、權限、RWD，接案也從 webpack 從零設定過。`}
 						</div>
 					</div>
 
 					<div className="information-bottom-skill-items">
 						<ul className="information-bottom-skill-item-title">
-							<li>Node.js</li>
+							<li>後端 Service（2024 進入）</li>
 						</ul>
-					
+
 						<div className="information-bottom-skill-item-text">
-							{`配合 GCP 服務建立後端 API
-部署於 Cloud Functions 並提供給前端使用
-DB 存取於 FireStore`}
+							{`碰之前沒寫過 service。
+Node / Express + MongoDB + Docker，
+處理排程通知、資料同步、信件寄送等背景服務；
+早期也用過 GCP Cloud Functions + Firestore。`}
 						</div>
 					</div>
 
 					<div className="information-bottom-skill-items">
-						<ul className="information-bottom-skill-item-title"><li>其他</li></ul>
+						<ul className="information-bottom-skill-item-title">
+							<li>Python / 爬蟲</li>
+						</ul>
+
+						<div className="information-bottom-skill-item-text">
+							{`寫爬蟲定期蒐集外部公開資料，
+清洗後入庫供系統使用；
+搭配排程自動化更新。`}
+						</div>
+					</div>
+
+					<div className="information-bottom-skill-items">
+						<ul className="information-bottom-skill-item-title">
+							<li>Unity XR / C#（2025 進入）</li>
+						</ul>
+
+						<div className="information-bottom-skill-item-text">
+							{`碰之前沒寫過 C#。
+Unity 6 + Meta Quest 3，
+做到 VR 遙控機器人、沉浸式復健訓練實機可跑。`}
+						</div>
+					</div>
+
+					<div className="information-bottom-skill-items">
+						<ul className="information-bottom-skill-item-title">
+							<li>Edge AI / 電腦視覺</li>
+						</ul>
+
+						<div className="information-bottom-skill-item-text">
+							{`地端邊緣裝置逐張影像分析，
+自寫精簡推論路徑讓 GPU 同跑偵測與 VLM，
+串 FastAPI 雲端儀表與 WebXR 呈現。`}
+						</div>
+					</div>
+
+					<div className="information-bottom-skill-items">
+						<ul className="information-bottom-skill-item-title">
+							<li>雲端 / 部署</li>
+						</ul>
+
+						<div className="information-bottom-skill-item-text">
+							{`AWS EC2 架機跑服務、GoDaddy 管網域與 DNS、
+Docker 容器化、Vercel 佈署前端 ——
+負責把寫好的東西真的推上線、讓外部連得到。`}
+						</div>
+					</div>
+
+					<div className="information-bottom-skill-items">
+						<ul className="information-bottom-skill-item-title"><li>其他 / 基本功</li></ul>
 
 						<ul style={{marginLeft: "24px", listStyle: "circle"}}>
-							<li>HTML/CSS/SCSS</li>
-							<li>i18n</li>
-							<li>Git</li>
+							<li>HTML / CSS / SCSS、i18n、Git</li>
+							<li>MongoDB / PostgreSQL</li>
 							<li>WordPress</li>
 							<li style={{whiteSpace: "pre-wrap"}}>{`資安弱掃處理\n(黑箱:ZAP/白箱:SonarQube)`}</li>
 						</ul>

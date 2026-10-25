@@ -1,0 +1,208 @@
+.ZoneJourney {
+	position: relative;
+	background: #06070c;
+}
+
+.Zone {
+	position: relative;
+	height: 200vh; // 給穿越動畫足夠捲動距離
+
+	.Zone-sticky {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: radial-gradient(120% 90% at 50% 10%, color-mix(in srgb, var(--clr) 18%, #06070c), #06070c 70%);
+	}
+
+	// ============ 會自己動的背景 ============
+	.Zone-ambient {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		overflow: hidden;
+	}
+
+	// 大範圍光暈（脈動 + 視差）
+	.amb-glow {
+		position: absolute;
+		left: 50%;
+		top: 40%;
+		width: 80vw;
+		height: 80vw;
+		margin-left: -40vw;
+		margin-top: -40vw;
+		border-radius: 50%;
+		background: radial-gradient(circle, color-mix(in srgb, var(--clr) 55%, transparent) 0%, transparent 60%);
+		filter: blur(20px);
+		transform: translateY(calc(var(--p, 0) * -180px));
+		animation: amb-pulse 5.5s ease-in-out infinite;
+	}
+
+	// 透視網格地板（持續流動）
+	.amb-grid {
+		position: absolute;
+		left: -50%;
+		right: -50%;
+		bottom: -5%;
+		height: 65%;
+		background-image:
+			linear-gradient(color-mix(in srgb, var(--clr) 70%, transparent) 2px, transparent 2px),
+			linear-gradient(90deg, color-mix(in srgb, var(--clr) 70%, transparent) 2px, transparent 2px);
+		background-size: 64px 64px;
+		transform: perspective(420px) rotateX(62deg);
+		transform-origin: bottom center;
+		opacity: 0.3;
+		-webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%);
+		mask-image: linear-gradient(to top, #000 10%, transparent 85%);
+		animation: amb-gridscroll 2.4s linear infinite;
+	}
+
+	// 擴散光環
+	.amb-rings span {
+		position: absolute;
+		left: 50%;
+		top: 40%;
+		width: 200px;
+		height: 200px;
+		margin: -100px 0 0 -100px;
+		border: 2px solid color-mix(in srgb, var(--clr) 60%, transparent);
+		border-radius: 50%;
+		opacity: 0;
+		animation: amb-ring 4.5s ease-out infinite;
+	}
+	.amb-rings span:nth-child(2) { animation-delay: 1.5s; }
+	.amb-rings span:nth-child(3) { animation-delay: 3s; }
+
+	// 飄浮粒子
+	.amb-dot {
+		position: absolute;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--clr) 85%, #fff);
+		box-shadow: 0 0 10px color-mix(in srgb, var(--clr) 80%, transparent);
+		opacity: 0;
+		animation: amb-float linear infinite;
+	}
+
+	.Zone-vignette {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: none;
+		background: radial-gradient(130% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
+	}
+
+	// ============ 內容（捲動時放大穿過）============
+	.Zone-content {
+		position: relative;
+		z-index: 2;
+		width: min(1080px, 92vw);
+		display: flex;
+		align-items: center;
+		gap: 40px;
+		will-change: opacity, transform;
+
+		.Zone-hero {
+			flex: 0 0 48%;
+			position: relative;
+			animation: hero-float 4s ease-in-out infinite;
+
+			&::after {
+				content: '';
+				position: absolute;
+				inset: -8% -4%;
+				background: radial-gradient(circle, color-mix(in srgb, var(--clr) 30%, transparent), transparent 70%);
+				z-index: -1;
+				filter: blur(10px);
+			}
+
+			.RoadScene-svg {
+				width: 100%;
+				height: auto;
+				filter: drop-shadow(0 20px 50px color-mix(in srgb, var(--clr) 40%, transparent));
+			}
+		}
+
+		.Zone-info {
+			flex: 1;
+
+			.Zone-tag {
+				display: inline-block;
+				padding: 6px 18px;
+				border-radius: 999px;
+				background: var(--clr);
+				color: #06070c;
+				font-size: 15px;
+				font-weight: 800;
+				box-shadow: 0 0 24px color-mix(in srgb, var(--clr) 60%, transparent);
+			}
+
+			.Zone-title {
+				margin-top: 18px;
+				font-size: 34px;
+				font-weight: 900;
+				color: #fff;
+				text-shadow: 0 2px 30px color-mix(in srgb, var(--clr) 50%, transparent);
+			}
+
+			.Zone-desc {
+				margin-top: 18px;
+				white-space: pre-wrap;
+				font-size: 17px;
+				font-weight: 400;
+				line-height: 1.8;
+				color: #dfe3ee;
+			}
+		}
+	}
+}
+
+// ============ keyframes ============
+@keyframes amb-pulse {
+	0%, 100% { opacity: 0.45; }
+	50% { opacity: 0.85; }
+}
+@keyframes amb-gridscroll {
+	to { background-position: 0 64px, 0 0; }
+}
+@keyframes amb-ring {
+	0% { transform: scale(0.3); opacity: 0.7; }
+	100% { transform: scale(3.2); opacity: 0; }
+}
+@keyframes amb-float {
+	0% { transform: translateY(40px); opacity: 0; }
+	15% { opacity: 0.9; }
+	85% { opacity: 0.9; }
+	100% { transform: translateY(-120px); opacity: 0; }
+}
+@keyframes hero-float {
+	0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+	50% { transform: translateY(-16px) rotate(0.5deg); }
+}
+
+@media (max-width: 900px) {
+	.Zone {
+		.Zone-content {
+			flex-direction: column;
+			gap: 20px;
+			text-align: center;
+
+			.Zone-hero { flex: none; width: min(420px, 80vw); }
+			.Zone-info .Zone-title { font-size: 26px; }
+			.Zone-info .Zone-desc { font-size: 15px; }
+			.Zone-info .Zone-tag { margin: 0 auto; }
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.Zone {
+		.amb-glow, .amb-grid, .amb-rings span, .amb-dot, .Zone-hero { animation: none; }
+		.amb-dot { opacity: 0.6; }
+	}
+}
