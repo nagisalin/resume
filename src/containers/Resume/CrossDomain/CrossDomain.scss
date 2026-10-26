@@ -74,11 +74,14 @@
 		}
 
 		.CrossDomainFinale-text {
-			white-space: pre-wrap;
 			font-size: 21px;
 			font-weight: 400;
 			line-height: 1.9;
 			color: #e3e6ef;
+
+			p { margin: 0 0 20px; }
+			p:last-child { margin-bottom: 0; }
+			.nb { white-space: nowrap; } // 關鍵詞組不被拆行
 		}
 
 		.CrossDomainFinale-sign {
@@ -92,6 +95,7 @@
 
 // ---------- 手機版：淡入卡片（不用穿門動畫）----------
 .CrossDomainMobile {
+	height: auto; // 蓋掉全域 section{height:100vh}，否則卡片被鎖在一個螢幕高內被切掉
 	background: #0f1017;
 	padding: 80px 20px;
 	display: flex;
@@ -149,6 +153,24 @@
 			white-space: pre-wrap;
 			font-size: 15px;
 			line-height: 1.7;
+		}
+	}
+}
+
+@media (max-width: 1024px) {
+	// 手機：開場/結尾改 compact，避免大片空白
+	.CrossDomainIntro {
+		height: auto;
+		min-height: 70vh;
+		padding: 80px 24px;
+	}
+	.CrossDomainFinale {
+		min-height: auto;
+		padding: 64px 24px;
+
+		.CrossDomainFinale-text {
+			text-align: left; // 手機置中+窄螢幕會把詞拆爛，改左對齊自然段落
+			font-size: 17px;
 		}
 	}
 }

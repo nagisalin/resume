@@ -1,0 +1,127 @@
+.SideProject3D {
+	position: relative;
+	background: #05060a;
+
+	.SP-sticky {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.SP-canvas {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		transform: translateZ(0);
+		will-change: transform;
+		canvas { display: block; width: 100% !important; height: 100% !important; }
+	}
+
+	.SP-mock {
+		width: 100%;
+		height: auto;
+		display: block;
+		filter: drop-shadow(0 12px 36px color-mix(in srgb, var(--clr) 40%, transparent));
+	}
+
+	// 展示面板：mockup 左 + 文字右
+	.SP-panel {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 2;
+		width: min(1000px, 92vw);
+		display: flex;
+		align-items: center;
+		gap: 40px;
+		transition: opacity 0.2s linear;
+		pointer-events: none;
+
+		.SP-panel-mock {
+			flex: 0 0 48%;
+			border-radius: 12px;
+			overflow: hidden;
+		}
+
+		.SP-panel-info {
+			flex: 1;
+			color: #fff;
+
+			.SP-panel-kicker {
+				font-size: 13px;
+				letter-spacing: 4px;
+				color: var(--clr);
+			}
+			.SP-panel-tag {
+				display: inline-block;
+				margin-top: 12px;
+				padding: 5px 16px;
+				border-radius: 999px;
+				background: var(--clr);
+				color: #06070c;
+				font-size: 14px;
+				font-weight: 800;
+			}
+			.SP-panel-title {
+				margin-top: 14px;
+				font-size: 30px;
+				font-weight: 900;
+			}
+			.SP-panel-desc {
+				margin-top: 16px;
+				white-space: pre-wrap;
+				font-size: 16px;
+				line-height: 1.8;
+				color: #d8dbe6;
+			}
+		}
+	}
+
+	// ---------- 手機版 ----------
+	&.SideProject3D--mobile {
+		padding: 80px 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+
+		.SP-m-title {
+			text-align: center;
+			font-size: 14px;
+			letter-spacing: 3px;
+			color: #9fd8ff;
+			margin-bottom: 8px;
+		}
+		.SP-m-card {
+			background: rgba(255, 255, 255, 0.04);
+			border: 1px solid color-mix(in srgb, var(--clr) 45%, transparent);
+			border-left: 5px solid var(--clr);
+			border-radius: 14px;
+			padding: 18px;
+			color: #e3e6ef;
+
+			.SP-m-mock { border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+			.SP-m-tag {
+				display: inline-block; padding: 4px 12px; border-radius: 999px;
+				background: var(--clr); color: #06070c; font-size: 12px; font-weight: 800;
+			}
+			.SP-m-title2 { margin-top: 10px; font-size: 20px; font-weight: 800; color: #fff; }
+			.SP-m-desc { margin-top: 10px; white-space: pre-wrap; font-size: 14px; line-height: 1.7; }
+		}
+	}
+}
+
+@media (max-width: 900px) {
+	.SideProject3D {
+		.SP-panel {
+			flex-direction: column;
+			gap: 20px;
+			text-align: center;
+			.SP-panel-mock { flex: none; width: min(460px, 86vw); }
+			.SP-panel-info .SP-panel-tag { margin-left: auto; margin-right: auto; }
+			.SP-panel-info .SP-panel-title { font-size: 24px; }
+			.SP-panel-info .SP-panel-desc { font-size: 14px; text-align: left; }
+		}
+	}
+}

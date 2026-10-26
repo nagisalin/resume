@@ -1,3 +1,16 @@
+// 「現在」標籤（最近一段工作，提示時間軸由近往回）
+.Exp3D-now {
+	display: inline-block;
+	padding: 3px 13px;
+	border-radius: 999px;
+	background: var(--clr);
+	color: #06070c;
+	font-size: 12px;
+	font-weight: 800;
+	letter-spacing: 2px;
+	margin-bottom: 10px;
+}
+
 .Experience3D {
 	position: relative;
 	background: #05060a;
@@ -80,8 +93,19 @@
 		}
 	}
 
+	.Exp3D-panel-slogan {
+		margin-top: 26px;
+		text-align: center;
+		font-size: 24px;
+		font-weight: 800;
+		line-height: 1.6;
+		color: var(--clr);
+		text-shadow: 0 0 26px color-mix(in srgb, var(--clr) 55%, transparent);
+	}
+
 	// ---------- 手機版：暗色卡片 ----------
 	&.Experience3D--mobile {
+		height: auto; // 蓋掉全域 section{height:100vh}，否則卡片被鎖在一個螢幕高內被切掉
 		padding: 80px 20px;
 		display: flex;
 		flex-direction: column;
@@ -106,6 +130,14 @@
 			.Exp3D-m-role { margin-top: 6px; font-size: 19px; font-weight: 800; color: #fff; }
 			.Exp3D-m-org { margin-top: 4px; font-size: 14px; color: #9aa0b2; }
 			.Exp3D-m-desc { margin-top: 12px; white-space: pre-wrap; font-size: 15px; line-height: 1.7; }
+			.Exp3D-m-slogan {
+				margin-top: 18px;
+				text-align: center;
+				font-size: 18px;
+				font-weight: 800;
+				line-height: 1.6;
+				color: var(--clr);
+			}
 
 			&.is-value {
 				background: rgba(255, 209, 102, 0.06);

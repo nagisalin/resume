@@ -10,7 +10,7 @@ const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
 const GAP = 46;
 const VIEW = 20;
 
-const stops = [
+const rawStops = [
 	{
 		key: 'teach', year: '2018 – 2021', color: '#f59e0b',
 		role: '課程設計 / 教學講師', org: '瑞比智慧科技 (CodingBar)',
@@ -33,30 +33,31 @@ const stops = [
 	},
 	{
 		key: 'value', year: '', color: '#ffd166', isValue: true,
-		role: '為現場帶來什麼', org: 'VALUE',
+		role: '', org: 'VALUE',
 		desc: `在 LSC/Sonice，除了被指派的專案，我也主動做了一些「沒人要求、但能讓團隊更好」的東西：
 
 ・一套內部專案管理系統 (PMS)，取代原本 GitLab Ticket 的問題回報流程（還藏了些彩蛋）
 ・gitlab-ci-monitor：盯著 CI 狀態不再漏接
-・Artemis / Autopilot 自動化計畫
-・常用頁面的收集系統
+・Artemis / Autopilot 自動化計畫、常用頁面的收集系統
+・把一份模糊的客戶 RFP，一路討論釐清成可執行的規格、功能工時報價與角色架構圖
 
 這年頭 vibe coding 越來越方便，「會不會寫扣」早就不是重點——
-重點一直是「有想法、能發現問題、並提出改善方案」的人。
-
-借《食戟之靈》一句話：
-「重要的不是你在現場完成了什麼，而是你能為現場帶來什麼。」`,
+重點一直是「有想法、能發現問題、並提出改善方案」的人。`,
+		slogan: '重要的不是你在現場完成了什麼，而是你能為現場帶來什麼。',
 	},
 ];
+
+// 時間軸由最近往回（2024 → 2018）；價值觀結尾 block 固定在最後
+const stops = [...rawStops.slice(0, 4).reverse(), rawStops[4]];
 
 const Experience3D = () => {
 	const mountRef = useRef(null);
 	const outerRef = useRef(null);
 	const panelRefs = useRef([]);
-	const [isMobile, setIsMobile] = useState(false);
+	const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
 
 	useEffect(() => {
-		const mq = window.matchMedia('(max-width: 768px)');
+		const mq = window.matchMedia('(max-width: 1024px)');
 		const on = () => setIsMobile(mq.matches);
 		on();
 		mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
@@ -194,14 +195,16 @@ const Experience3D = () => {
 
 	if (isMobile) {
 		return (
-			<section id="Experience" className="Experience3D Experience3D--mobile">
+			<section id="Experience" key="exp-mobile" className="Experience3D Experience3D--mobile">
 				<div className="Exp3D-m-title">EXPERIENCE</div>
-				{stops.map((s) => (
+				{stops.map((s, i) => (
 					<div key={s.key} className={`Exp3D-m-card${s.isValue ? ' is-value' : ''}`} style={{ '--clr': s.color }}>
+						{i === 0 && <div className="Exp3D-now">NOW · 現在</div>}
 						{s.year && <div className="Exp3D-m-year">{s.year}</div>}
-						<div className="Exp3D-m-role">{s.role}</div>
+						{s.role && <div className="Exp3D-m-role">{s.role}</div>}
 						{s.org !== 'VALUE' && <div className="Exp3D-m-org">{s.org}</div>}
 						<div className="Exp3D-m-desc">{s.desc}</div>
+						{s.slogan && <div className="Exp3D-m-slogan">{s.slogan}</div>}
 					</div>
 				))}
 			</section>
@@ -209,7 +212,7 @@ const Experience3D = () => {
 	}
 
 	return (
-		<section id="Experience" className="Experience3D" ref={outerRef} style={{ height: `${stops.length * 75}vh` }}>
+		<section id="Experience" key="exp-desktop" className="Experience3D" ref={outerRef} style={{ height: `${stops.length * 75}vh` }}>
 			<div className="Exp3D-sticky">
 				<div className="Exp3D-canvas" ref={mountRef} />
 				{stops.map((s, i) => (
@@ -218,11 +221,13 @@ const Experience3D = () => {
 						className={`Exp3D-panel${s.isValue ? ' is-value' : ''}`}
 						ref={(el) => (panelRefs.current[i] = el)}
 						style={{ opacity: 0, '--clr': s.color }}>
+						{i === 0 && <div className="Exp3D-now">NOW · 現在</div>}
 						{s.year && <div className="Exp3D-panel-year">{s.year}</div>}
-						{s.isValue && <div className="Exp3D-panel-kicker">VALUE · 為現場帶來什麼</div>}
-						<div className="Exp3D-panel-role">{s.role}</div>
+						{s.isValue && <div className="Exp3D-panel-kicker">VALUE</div>}
+						{s.role && <div className="Exp3D-panel-role">{s.role}</div>}
 						{s.org !== 'VALUE' && <div className="Exp3D-panel-org">{s.org}</div>}
 						<div className="Exp3D-panel-desc">{s.desc}</div>
+						{s.slogan && <div className="Exp3D-panel-slogan">{s.slogan}</div>}
 					</div>
 				))}
 			</div>

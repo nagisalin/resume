@@ -29,9 +29,9 @@ const landmarks = [
 		scene: BackendScene,
 		tag: '原本不會：寫 service',
 		title: '後端 Service × 雲端部署',
-		description: `碰後端之前，我沒寫過 service。最後長成 Node / Express + MongoDB + Docker，撐起任務排程通知、跨系統資料同步、信件寄送這些要穩定在背景跑的東西。
+		description: `碰後端之前，我沒寫過 service。在公司是跟著原本後端的架構走，弄懂他們怎麼設計、怎麼部署上架，照著把需要的功能補上——Node / Express + MongoDB + Docker，處理任務排程通知、跨系統資料同步、信件寄送這些背景服務。
 
-而且「寫完」不是結束：我自己用 AWS EC2 架機跑服務、用 GoDaddy 管網域與 DNS、用 Docker 容器化、用 Vercel 佈署前端——把東西真的推上線、讓外部連得到，這一段也是我在扛。`,
+重點不是「這套架構是我的」，而是把原本不會的操作學起來：AWS EC2 架機、GoDaddy 管網域與 DNS、Docker 容器化、Vercel 佈署前端——從只會寫畫面，到能看懂別人的後端、也能自己把東西推上線。`,
 	},
 	{
 		key: 'crawler',
@@ -55,7 +55,7 @@ const landmarks = [
 		title: 'Unity XR × Meta Quest 3',
 		description: `碰 Unity 之前，我沒寫過半行 C#。
 
-兩個都做到實機能跑：一個是 VR 遙控機器人——頭盔顯示機器人身上的即時影像，用手勢下達移動指令；另一個是沉浸式的復健訓練。VR 的坑跟寫網頁完全不同：手部追蹤的捏合門檻、座姿站姿的追蹤原點、WebXR 只在 HTTPS 或 localhost 下才給「進入 VR」……都是要上機才知道的事。`,
+兩個都做到實機能跑：一個是 VR 遙控機器人——頭盔顯示機器人身上的即時影像，用手勢下達移動指令；另一個是沉浸式的復健訓練。VR 的坑跟寫網頁完全不同：手部追蹤的捏合門檻、坐姿站姿的追蹤原點、WebXR 只在 HTTPS 或 localhost 下才給「進入 VR」……都是要上機才知道的事。`,
 	},
 	{
 		key: 'edgeai',
@@ -72,11 +72,11 @@ const landmarks = [
 ];
 
 const CrossDomain = () => {
-	const [isMobile, setIsMobile] = useState(false);
+	const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
 	const [finaleRef, finaleVisible] = useScrollReveal();
 
 	useEffect(() => {
-		const mq = window.matchMedia('(max-width: 768px)');
+		const mq = window.matchMedia('(max-width: 1024px)');
 		const onChange = () => setIsMobile(mq.matches);
 		onChange();
 		if (mq.addEventListener) mq.addEventListener('change', onChange);
@@ -101,7 +101,7 @@ const CrossDomain = () => {
 			</section>
 
 			{isMobile ? (
-				<section className="CrossDomainMobile">
+				<section key="cd-mobile" className="CrossDomainMobile">
 					{landmarks.map((lm) => {
 						const Scene = lm.scene;
 						return (
@@ -118,21 +118,16 @@ const CrossDomain = () => {
 					})}
 				</section>
 			) : (
-				<WebGLJourney stations={landmarks} />
+				<WebGLJourney key="cd-desktop" stations={landmarks} />
 			)}
 
 			<section className="CrossDomainFinale" ref={finaleRef}>
 				<div className={classnames('CrossDomainFinale-inner', { 'is-visible': finaleVisible })}>
-					<div className="CrossDomainFinale-text">{`走完這段路，我其實也不確定「什麼都會一點」算不算好事。
-
-這年頭 vibe coding，工程師好像都被推著變成 Any-Domain ——
-語法、框架這些，AI 都幫得上忙。
-真正難被取代的，大概是溝通、是創意，
-是把東西「落地」的能力，是能同時開很多工、把 token 燒出價值的能力。
-
-我不是每個領域都最強的那個。
-但「給我一個沒做過的領域，我有辦法把它弄上線」——
-這件事，這一路上已經做給你看過了。`}</div>
+					<div className="CrossDomainFinale-text">
+						<p>走完這段路，我其實也不確定<span className="nb">「什麼都會一點」</span>算不算好事。</p>
+						<p>這年頭 vibe coding，工程師好像都被推著變成 <span className="nb">Any-Domain</span>——語法、框架這些，AI 都幫得上忙。真正難被取代的，大概是溝通、是創意，是把東西<span className="nb">「落地」</span>的能力，是能同時開很多工、把 token 燒出價值的能力。</p>
+						<p>我不是每個領域都最強的那個。但「給我一個沒做過的領域，我有辦法把它弄上線」——這件事，這一路上已經做給你看過了。</p>
+					</div>
 					<div className="CrossDomainFinale-sign">—— ADE · Any-Domain Engineer</div>
 				</div>
 			</section>

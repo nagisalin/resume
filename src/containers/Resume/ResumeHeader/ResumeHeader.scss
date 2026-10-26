@@ -1,86 +1,73 @@
-.ResumeHeader {
+.SideNav {
 	position: fixed;
-	top: 0;
-	width: 100%;
-	height: 57px;
-	background: #333;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 10px 50px 0;
+	right: 30px;
+	top: 50%;
+	transform: translateY(-50%);
 	z-index: 888;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 26px;
 
-	--clr: #fdf5e6;
+	// 貫穿的細線（通過每個點的中心）
+	.SideNav-line {
+		position: absolute;
+		right: 5px;
+		top: -8px;
+		bottom: -8px;
+		width: 2px;
+		background: rgba(255, 255, 255, 0.12);
+		border-radius: 2px;
+	}
 
-	nav {
+	a {
+		position: relative;
 		display: flex;
-		gap: 10px;
+		align-items: center;
+		gap: 12px;
+		text-decoration: none;
+		cursor: pointer;
 
-		a {
-			position: relative;
-			text-decoration: none;
-			padding: 12px 20px;
-			color: #fff;
-			font-weight: 700;
+		.SideNav-label {
+			font-size: 13px;
+			letter-spacing: 3px;
+			color: rgba(255, 255, 255, 0.5);
+			white-space: nowrap;
+			opacity: 0;
+			transform: translateX(8px);
+			transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
 		}
 
-		a.active {
-			background: var(--clr);
-			color: #333;
-			border-top-left-radius: 10px;
-			border-top-right-radius: 10px;
+		.SideNav-dot {
+			width: 11px;
+			height: 11px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.3);
+			transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 		}
 
-		a.active::before {
-			content: '';
-			position: absolute;
-			left: -20px;
-			bottom: 0;
-			width: 20px;
-			height: 20px;
-			background: transparent;
-			clip: rect(0px 20px 20px 0px);
-
-			border-bottom-right-radius: 20px;
-			box-shadow: 5px 5px 0 5px var(--clr);
+		&:hover {
+			.SideNav-label { opacity: 1; transform: none; color: rgba(255, 255, 255, 0.85); }
+			.SideNav-dot { background: var(--clr); }
 		}
 
-		a.active::after {
-			content: '';
-			position: absolute;
-			right: -20px;
-			bottom: 0;
-			width: 20px;
-			height: 20px;
-			background: transparent;
-			clip: rect(0px 20px 20px 0px);
-
-			border-bottom-left-radius: 20px;
-			box-shadow: -5px 5px 0 5px var(--clr);
+		&.active {
+			.SideNav-label { opacity: 1; transform: none; color: var(--clr); }
+			.SideNav-dot {
+				background: var(--clr);
+				transform: scale(1.55);
+				box-shadow: 0 0 16px var(--clr);
+			}
 		}
 	}
 }
 
-@media (max-width: 600px) {
-	.ResumeHeader {
-		nav {
-			position: absolute;
+@media (max-width: 640px) {
+	.SideNav {
+		right: 16px;
+		gap: 20px;
 
-			&.Information {
-				left: 113px;
-			}
-
-			&.Experience {
-				left: calc(50% - 210px);
-			}
-
-			&.CrossDomain {
-				left: calc(50% - 338px);
-			}
-
-			&.SideProject {
-				left: calc(50% - 466px);
-			}
-		}
+		.SideNav-label { display: none; }
+		.SideNav-dot { width: 9px; height: 9px; }
 	}
 }

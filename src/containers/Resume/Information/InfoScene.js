@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
@@ -12,14 +12,36 @@ import './InfoScene.scss';
 const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
 const smooth = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
 
+const SKILLS = [
+	['前端 React / Vue', '本行·多套企業後台與儀表板'],
+	['後端 Service', '2026 進入·Node/Express·MongoDB·Docker'],
+	['雲端 / 部署', 'AWS EC2·GoDaddy·Docker·Vercel'],
+	['Python / 爬蟲', '自動化蒐集與清洗資料'],
+	['Unity XR / C#', '2026 進入·Quest 3 實機'],
+	['Edge AI / 電腦視覺', '地端即時影像·GPU 推論'],
+];
+const ABOUT = `一隻從大學開始接觸程式的史萊姆。數學系出身，比起死記語法，更吃的是看文件、問 AI、試錯，然後把想法硬做成畫面的能力。
+
+自從 AI 普及後，工程的門檻從「會不會寫」變成「敢不敢落地」——而把設計與想法實際變成能動的畫面，正是支撐我一直學下去的成就感來源。`;
+
 const InfoScene = () => {
 	const mountRef = useRef(null);
 	const outerRef = useRef(null);
 	const heroRef = useRef(null);
 	const introRef = useRef(null);
 	const skillsRef = useRef(null);
+	const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
 
 	useEffect(() => {
+		const mq = window.matchMedia('(max-width: 1024px)');
+		const on = () => setIsMobile(mq.matches);
+		on();
+		mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
+		return () => { mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); };
+	}, []);
+
+	useEffect(() => {
+		if (isMobile) return; // 手機走正常堆疊版，不跑 WebGL 分幕
 		const mount = mountRef.current;
 		const outer = outerRef.current;
 		if (!mount || !outer) return;
@@ -108,10 +130,46 @@ const InfoScene = () => {
 			composer.dispose?.();
 			if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
 		};
-	}, []);
+	}, [isMobile]);
+
+	// ---- 手機版：正常堆疊，不分幕、不跑 WebGL ----
+	if (isMobile) {
+		return (
+			<section id="Information" key="info-mobile" className="InfoScene InfoScene--mobile">
+				<div className="InfoM-hero">
+					<div className="InfoScene-avatars">
+						<img src={Avatar1} alt="洪世桓" className="InfoScene-avatar" />
+						<img src={Avatar2} alt="史萊姆 logo" className="InfoScene-avatar InfoScene-avatar--slime" />
+					</div>
+					<div className="InfoScene-name">洪世桓</div>
+					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
+					<div className="InfoScene-tagline">{`「哪都能做」工程師
+這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`}</div>
+					<div className="InfoScene-contact">🏠 Taipei　📬 getsulin@gmail.com　🏫 臺師大 數學系</div>
+				</div>
+
+				<div className="InfoM-block">
+					<div className="InfoScene-panel-kicker">ABOUT</div>
+					<div className="InfoScene-panel-text">{ABOUT}</div>
+				</div>
+
+				<div className="InfoM-block">
+					<div className="InfoScene-panel-kicker">SKILLS</div>
+					<div className="InfoScene-skillgrid">
+						{SKILLS.map(([t, d]) => (
+							<div key={t} className="InfoScene-skillcard">
+								<div className="InfoScene-skillcard-t">{t}</div>
+								<div className="InfoScene-skillcard-d">{d}</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+		);
+	}
 
 	return (
-		<section id="Information" className="InfoScene" ref={outerRef}>
+		<section id="Information" key="info-desktop" className="InfoScene" ref={outerRef}>
 			<div className="InfoScene-sticky">
 				<div className="InfoScene-canvas" ref={mountRef} />
 
@@ -132,23 +190,14 @@ const InfoScene = () => {
 				{/* 第二幕：自介 */}
 				<div className="InfoScene-panel InfoScene-intro" ref={introRef}>
 					<div className="InfoScene-panel-kicker">ABOUT</div>
-					<div className="InfoScene-panel-text">{`一隻從大學開始接觸程式的史萊姆。數學系出身，比起死記語法，更吃的是看文件、問 AI、試錯，然後把想法硬做成畫面的能力。
-
-自從 AI 普及後，工程的門檻從「會不會寫」變成「敢不敢落地」——而把設計與想法實際變成能動的畫面，正是支撐我一直學下去的成就感來源。`}</div>
+					<div className="InfoScene-panel-text">{ABOUT}</div>
 				</div>
 
 				{/* 第三幕：技能 */}
 				<div className="InfoScene-panel InfoScene-skills" ref={skillsRef}>
 					<div className="InfoScene-panel-kicker">SKILLS</div>
 					<div className="InfoScene-skillgrid">
-						{[
-							['前端 React / Vue', '本行·多套企業後台與儀表板'],
-							['後端 Service', '2024 進入·Node/Express·MongoDB·Docker'],
-							['雲端 / 部署', 'AWS EC2·GoDaddy·Docker·Vercel'],
-							['Python / 爬蟲', '自動化蒐集與清洗資料'],
-							['Unity XR / C#', '2025 進入·Quest 3 實機'],
-							['Edge AI / 電腦視覺', '地端即時影像·GPU 推論'],
-						].map(([t, d]) => (
+						{SKILLS.map(([t, d]) => (
 							<div key={t} className="InfoScene-skillcard">
 								<div className="InfoScene-skillcard-t">{t}</div>
 								<div className="InfoScene-skillcard-d">{d}</div>

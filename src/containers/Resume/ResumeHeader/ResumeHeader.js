@@ -2,55 +2,54 @@ import React, { useState, useEffect } from "react";
 
 import './ResumeHeader.scss';
 
-const ResumeHeader = () => {
+const SECTIONS = [
+	{ id: 'Information', label: '關於', clr: '#58d68d' },
+	{ id: 'Experience', label: '經歷', clr: '#ffd166' },
+	{ id: 'CrossDomain', label: '跨領域', clr: '#a78bfa' },
+	{ id: 'SideProject', label: '作品', clr: '#22d3ee' },
+];
 
-	const [currentContent, setCurrentContent] = useState('Information')
+const ResumeHeader = () => {
+	const [current, setCurrent] = useState('Information');
 
 	useEffect(() => {
 		let ticking = false;
-
 		const compute = () => {
 			ticking = false;
-			const sections = document.getElementsByTagName('section');
-			const headerHeight = 60;
-			const top = window.scrollY;
-
-			for (let section of sections) {
-				const offset = section.offsetTop - 3;
-				const height = section.offsetHeight;
-				const id = section.getAttribute('id');
-				if (!id) continue; // 無 id 的 section（穿越場景等）不影響導覽高亮
-
-				if (top >= offset && top < offset + height - headerHeight) {
-					setCurrentContent(id);
-				} else if (top >= offset + height - headerHeight && top < offset + height) {
-					setCurrentContent('divider');
-				}
+			// 以視窗 40% 高度為判定線，挑最後一個已通過的 section
+			const line = window.scrollY + window.innerHeight * 0.4;
+			let best = SECTIONS[0].id;
+			for (const s of SECTIONS) {
+				const el = document.getElementById(s.id);
+				if (el && line >= el.offsetTop) best = s.id;
 			}
+			setCurrent(best);
 		};
-
-		// rAF 節流：一個影格最多算一次版面，避免捲動時反覆 forced reflow
 		const onScroll = () => {
 			if (ticking) return;
 			ticking = true;
 			requestAnimationFrame(compute);
 		};
-
 		window.addEventListener('scroll', onScroll, { passive: true });
 		compute();
-
 		return () => window.removeEventListener('scroll', onScroll);
 	}, []);
 
 	return (
-		<div className="ResumeHeader">
-			<nav className={currentContent}>
-				<a href="#Information" style={{ "--clr": getComputedStyle(document.body).getPropertyValue('--cream_color') }} className={(currentContent === 'Information') ? "active" : ""}>Information</a>
-				<a href="#Experience" style={{ "--clr": getComputedStyle(document.body).getPropertyValue('--lightYellow_color') }} className={(currentContent === 'Experience') ? "active" : ""}>Experience</a>
-				<a href="#CrossDomain" style={{ "--clr": getComputedStyle(document.body).getPropertyValue('--lavender_color') }} className={(currentContent === 'CrossDomain') ? "active" : ""}>CrossDomain</a>
-				<a href="#SideProject" style={{ "--clr": getComputedStyle(document.body).getPropertyValue('--skyBlue_color') }} className={(currentContent === 'SideProject') ? "active" : ""}>SideProject</a>
-			</nav>
-		</div>
+		<nav className="SideNav" aria-label="章節導覽">
+			<span className="SideNav-line" />
+			{SECTIONS.map((s) => (
+				<a
+					key={s.id}
+					href={`#${s.id}`}
+					className={current === s.id ? 'active' : ''}
+					style={{ '--clr': s.clr }}
+					aria-label={s.label}>
+					<span className="SideNav-label">{s.label}</span>
+					<span className="SideNav-dot" />
+				</a>
+			))}
+		</nav>
 	);
 }
 

@@ -4,7 +4,7 @@ import ResumeHeader from './ResumeHeader/ResumeHeader';
 import InfoScene from 'containers/Resume/Information/InfoScene';
 import Experience3D from 'containers/Resume/Experience/Experience3D';
 import CrossDomain from 'containers/Resume/CrossDomain/CrossDomain';
-import SideProject from 'containers/Resume/SideProject/SideProject';
+import SideProjectGallery from 'containers/Resume/SideProject/SideProjectGallery';
 
 import "./Resume.scss";
 
@@ -18,7 +18,7 @@ const Resume = () => {
 			const el = document.getElementById(id);
 			if (el) {
 				e.preventDefault();
-				const y = el.getBoundingClientRect().top + window.scrollY - 64;
+				const y = el.getBoundingClientRect().top + window.scrollY - 4;
 				window.scrollTo({ top: y, behavior: 'smooth' });
 			}
 		};
@@ -32,7 +32,7 @@ const Resume = () => {
 			<InfoScene />
 			<Experience3D />
 			<CrossDomain />
-			<SideProject />
+			<SideProjectGallery />
 		</div>
 	);
 }

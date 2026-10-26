@@ -62,7 +62,7 @@ const Information = () => {
 
 					<div className="information-bottom-skill-items">
 						<ul className="information-bottom-skill-item-title">
-							<li>後端 Service（2024 進入）</li>
+							<li>後端 Service（2026 進入）</li>
 						</ul>
 
 						<div className="information-bottom-skill-item-text">
@@ -87,7 +87,7 @@ Node / Express + MongoDB + Docker，
 
 					<div className="information-bottom-skill-items">
 						<ul className="information-bottom-skill-item-title">
-							<li>Unity XR / C#（2025 進入）</li>
+							<li>Unity XR / C#（2026 進入）</li>
 						</ul>
 
 						<div className="information-bottom-skill-item-text">
