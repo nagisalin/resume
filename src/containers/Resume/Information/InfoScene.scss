@@ -1,3 +1,14 @@
+// 聯絡資訊：三個項目各自不斷行，整塊一起 wrap（避免「臺師大/數學系」被拆半）
+.InfoScene-contact {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 6px 18px;
+
+	.nb { white-space: nowrap; }
+}
+
 // ---- 手機版：正常堆疊（用 .InfoScene.InfoScene--mobile 提高權重，蓋掉下方 .InfoScene 的 height:320vh）----
 .InfoScene.InfoScene--mobile {
 	height: auto;

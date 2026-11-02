@@ -2,6 +2,10 @@ import { useEffect, useRef, useState, Fragment } from 'react';
 import * as THREE from 'three';
 import { makeStarTexture } from 'shared/starTexture';
 import { MonitorWallMock, StayJourneyMock, ChargeMapMock, FilterMock, OrgAgentMock, VoiceDashMock } from './mockups';
+import ChargeMap3D from './ChargeMap3D';
+import MonitorWall3D from './MonitorWall3D';
+import VoiceDash3D from './VoiceDash3D';
+import StayJourney3D from './StayJourney3D';
 
 import aiParkImg from 'design/pictures/aiParkImg.png';
 import oaImg from 'design/pictures/oaImg.png';
@@ -14,18 +18,18 @@ import './SideProjectGallery.scss';
 
 const works = [
 	// ---- LSC / Sonice（去識別化重刻）----
-	{ key: 'monitor', group: 'LSC / Sonice', color: '#22d3ee', mock: MonitorWallMock, title: '即時影像監控牆', tag: '效能取捨 · WebSocket',
-		desc: `數百路影像串流匯成一面即時監控牆。難點全在效能取捨——同時解多路串流、斷線自動重連、頻寬不足時的降幀/降畫質策略，狀態用 WebSocket 即時推送。` },
-	{ key: 'stay', group: 'LSC / Sonice', color: '#34d399', mock: StayJourneyMock, title: '智慧旅宿房客旅程', tag: 'server 驅動 · 狀態機 · IoT',
-		desc: `房客從一封 email 的 magic-link 進場，整段旅程由 server 驅動的 stage 狀態機推進（抵達前 → 入住日 → 住宿中 → 退房 → 評論）。串智慧門鎖與 IoT、OTA 訂單、通訊綁定，全程多語言並依案場時區顯示。` },
-	{ key: 'map', group: 'LSC / Sonice', color: '#f59e0b', mock: ChargeMapMock, title: '充電站地圖', tag: '地圖 SDK · 叢集 · 即時狀態',
-		desc: `全區電動車充電站地圖：多站點叢集、即時狀態（可用 / 使用中 / 離線）、點選看站點詳情。重點在大量 marker 的效能與叢集策略。` },
+	{ key: 'monitor', group: 'LSC / Sonice', color: '#22d3ee', mock: MonitorWallMock, live: MonitorWall3D, title: '即時影像監控牆', tag: '效能取捨 · WebSocket · 可互動',
+		desc: `數百路影像串流匯成一面即時監控牆。難點全在效能取捨——同時解多路串流、斷線自動重連、頻寬不足時的降幀/降畫質策略，狀態用 WebSocket 即時推送。\n（右邊這塊可以玩：拖曳旋轉、點格子看攝影機狀態。）` },
+	{ key: 'stay', group: 'LSC / Sonice', color: '#34d399', mock: StayJourneyMock, live: StayJourney3D, title: '智慧旅宿房客旅程', tag: 'server 驅動 · 狀態機 · IoT · 可互動',
+		desc: `房客從一封 email 的 magic-link 進場，整段旅程由 server 驅動的 stage 狀態機推進（抵達前 → 入住日 → 住宿中 → 退房 → 評論）。串智慧門鎖與 IoT、OTA 訂單、通訊綁定，全程多語言並依案場時區顯示。\n（右邊這塊可以玩：拖曳旋轉、點階段看說明。）` },
+	{ key: 'map', group: 'LSC / Sonice', color: '#f59e0b', mock: ChargeMapMock, live: ChargeMap3D, title: '充電站地圖', tag: '地圖 SDK · 叢集 · 即時狀態 · 可互動',
+		desc: `全區電動車充電站地圖：多站點叢集、即時狀態（可用 / 使用中 / 離線）、點選看站點詳情。重點在大量 marker 的效能與叢集策略。\n（右邊這塊可以玩：拖曳旋轉、點站點看詳情。）` },
 	{ key: 'filter', group: 'LSC / Sonice', color: '#a78bfa', mock: FilterMock, title: '多條件篩選器組合', tag: '最高頻 · 做對很難',
 		desc: `後台最高頻、也最容易做半套的東西。多條件組合 × URL 同步（可分享、可回上一步）× 換頁保留 × 「重設」的語意要對——每一項單獨簡單，湊在一起做對很難。` },
 	{ key: 'org', group: 'LSC / Sonice', color: '#818cf8', mock: OrgAgentMock, title: 'AI 員工編排平台', tag: '多代理 · 組織 · 治理',
 		desc: `把一群 AI agent 當成「AI 員工」來編排：自動生成組織（CEO / CTO / 各部門），每個員工有自己的工具、知識庫與 MCP。重點是治理——我設了階層規則：最下層的 agent 不能自己再生 agent、主管只負責指揮不親自動手，避免失控與無限展開。` },
-	{ key: 'voice', group: 'LSC / Sonice', color: '#2dd4bf', mock: VoiceDashMock, title: '語音答詢治理看板', tag: '語音 AI · 語意層 · 資料一致',
-		desc: `同一個頁面：治理看板 + 語音/文字答詢。關鍵是看板數字和 AI 助理講出來的數字來自「同一個語意層」，所以永遠一致。串 OpenAI Realtime（WebRTC 直連、短效憑證不外洩金鑰），模型要數字時走 function call 查語意層、寫稽核日誌，並有權限過濾與「無法回答」處理。` },
+	{ key: 'voice', group: 'LSC / Sonice', color: '#2dd4bf', mock: VoiceDashMock, live: VoiceDash3D, title: '語音答詢治理看板', tag: '語音 AI · 語意層 · 資料一致 · 可互動',
+		desc: `同一個頁面：治理看板 + 語音/文字答詢。關鍵是看板數字和 AI 助理講出來的數字來自「同一個語意層」，所以永遠一致。串 OpenAI Realtime（WebRTC 直連、短效憑證不外洩金鑰），模型要數字時走 function call 查語意層、寫稽核日誌，並有權限過濾與「無法回答」處理。\n（右邊這塊可以玩：拖曳旋轉、點指標看明細。）` },
 
 	// ---- 早期作品 ----
 	{ key: 'park', group: '早期作品', color: '#17c0eb', img: aiParkImg, title: '停車場後台管理系統', tag: '太平洋建設 · 車辨即時影像',
@@ -115,6 +119,7 @@ const SideProjectGallery = () => {
 
 	const w = works[active];
 	const Mock = w.mock;
+	const Live = w.live;
 
 	return (
 		<section id="SideProject" className="SPGallery">
@@ -144,10 +149,10 @@ const SideProjectGallery = () => {
 				{/* 右：3D 展示 */}
 				<div className="SPGallery-detail" key={w.key} style={{ '--clr': w.color }}>
 					<div className="SPGallery-screen">
-						{w.mock ? <Mock /> : <img src={w.img} alt={w.title} className="SPGallery-img" />}
+						{Live ? <Live /> : w.mock ? <Mock /> : <img src={w.img} alt={w.title} className="SPGallery-img" />}
 					</div>
 					<div className="SPGallery-info">
-						<div className="SPGallery-kicker">{w.group === 'LSC / Sonice' ? 'LSC / Sonice · 去識別化重刻' : '早期作品'}</div>
+						<div className="SPGallery-kicker">{w.group === 'LSC / Sonice' ? 'LSC / Sonice' : '早期作品'}</div>
 						<div className="SPGallery-tag">{w.tag}</div>
 						<div className="SPGallery-title">{w.title}</div>
 						<div className="SPGallery-desc">{w.desc}</div>

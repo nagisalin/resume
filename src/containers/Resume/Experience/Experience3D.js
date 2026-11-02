@@ -55,6 +55,12 @@ const Experience3D = () => {
 	const outerRef = useRef(null);
 	const panelRefs = useRef([]);
 	const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
+	// 只有「不支援 WebGL」才退回靜態卡片；手機照樣跑捲動時間隧道（效能檔）
+	const [useStatic] = useState(() => {
+		if (typeof window === 'undefined') return true;
+		try { const c = document.createElement('canvas'); return !(c.getContext('webgl2') || c.getContext('webgl')); }
+		catch { return true; }
+	});
 
 	useEffect(() => {
 		const mq = window.matchMedia('(max-width: 1024px)');
@@ -65,12 +71,10 @@ const Experience3D = () => {
 	}, []);
 
 	useEffect(() => {
-		if (isMobile) return; // 手機走 DOM 卡片，不起 WebGL
+		if (useStatic) return; // 不支援 WebGL 才走靜態卡片
 		const mount = mountRef.current;
 		const outer = outerRef.current;
 		if (!mount || !outer) return;
-		const test = document.createElement('canvas');
-		if (!(test.getContext('webgl2') || test.getContext('webgl'))) return;
 
 		let width = mount.clientWidth;
 		let height = mount.clientHeight;
@@ -87,8 +91,8 @@ const Experience3D = () => {
 		const n = stops.length;
 		const totalDepth = (n - 1) * GAP;
 
-		// 星空
-		const starCount = 1400;
+		// 星空（手機砍半）
+		const starCount = isMobile ? 700 : 1400;
 		const sp = new Float32Array(starCount * 3);
 		for (let i = 0; i < starCount; i++) {
 			sp[i * 3] = (Math.random() - 0.5) * 160;
@@ -129,13 +133,16 @@ const Experience3D = () => {
 
 		const composer = new EffectComposer(renderer);
 		composer.addPass(new RenderPass(scene, camera));
-		composer.addPass(new UnrealBloomPass(new THREE.Vector2(width / 2, height / 2), 0.7, 0.55, 0.1));
+		const bloomRes = isMobile ? 3 : 2; // 手機 1/3 解析度泛光
+		const bloom = new UnrealBloomPass(new THREE.Vector2(width / bloomRes, height / bloomRes), isMobile ? 0.6 : 0.7, 0.55, 0.1);
+		composer.addPass(bloom);
 
 		const onResize = () => {
 			width = mount.clientWidth;
 			height = mount.clientHeight;
 			renderer.setSize(width, height);
 			composer.setSize(width, height);
+			bloom.setSize(width / bloomRes, height / bloomRes);
 			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
 		};
@@ -191,11 +198,11 @@ const Experience3D = () => {
 			composer.dispose?.();
 			if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
 		};
-	}, [isMobile]);
+	}, [useStatic, isMobile]);
 
-	if (isMobile) {
+	if (useStatic) {
 		return (
-			<section id="Experience" key="exp-mobile" className="Experience3D Experience3D--mobile">
+			<section id="Experience" key="exp-static" className="Experience3D Experience3D--mobile">
 				<div className="Exp3D-m-title">EXPERIENCE</div>
 				{stops.map((s, i) => (
 					<div key={s.key} className={`Exp3D-m-card${s.isValue ? ' is-value' : ''}`} style={{ '--clr': s.color }}>
@@ -212,7 +219,7 @@ const Experience3D = () => {
 	}
 
 	return (
-		<section id="Experience" key="exp-desktop" className="Experience3D" ref={outerRef} style={{ height: `${stops.length * 75}vh` }}>
+		<section id="Experience" key="exp-cinema" className="Experience3D" ref={outerRef} style={{ height: `${stops.length * 75}vh` }}>
 			<div className="Exp3D-sticky">
 				<div className="Exp3D-canvas" ref={mountRef} />
 				{stops.map((s, i) => (

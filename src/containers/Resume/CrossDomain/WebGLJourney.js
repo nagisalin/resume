@@ -11,7 +11,7 @@ const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
 const GAP = 50;
 const VIEW = 24; // 相機與聚焦物件的距離（越大物件越小）
 
-const WebGLJourney = ({ stations }) => {
+const WebGLJourney = ({ stations, mobile = false }) => {
 	const mountRef = useRef(null);
 	const outerRef = useRef(null);
 	const stickyRef = useRef(null);
@@ -44,8 +44,8 @@ const WebGLJourney = ({ stations }) => {
 
 		const totalDepth = (n - 1) * GAP;
 
-		// 星空
-		const starCount = 1500;
+		// 星空（手機砍半）
+		const starCount = mobile ? 750 : 1500;
 		const starPos = new Float32Array(starCount * 3);
 		for (let i = 0; i < starCount; i++) {
 			starPos[i * 3] = (Math.random() - 0.5) * 160;
@@ -81,7 +81,8 @@ const WebGLJourney = ({ stations }) => {
 		const composer = new EffectComposer(renderer);
 		composer.setPixelRatio(1);
 		composer.addPass(new RenderPass(scene, camera));
-		const bloom = new UnrealBloomPass(new THREE.Vector2(width / 2, height / 2), 0.55, 0.5, 0.22);
+		const bloomRes = mobile ? 3 : 2; // 手機 1/3 解析度泛光
+		const bloom = new UnrealBloomPass(new THREE.Vector2(width / bloomRes, height / bloomRes), mobile ? 0.5 : 0.55, 0.5, 0.22);
 		composer.addPass(bloom);
 
 		const onResize = () => {
@@ -89,6 +90,7 @@ const WebGLJourney = ({ stations }) => {
 			height = mount.clientHeight;
 			renderer.setSize(width, height);
 			composer.setSize(width, height);
+			bloom.setSize(width / bloomRes, height / bloomRes); // setSize 後重設，維持降解析度
 			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
 		};
@@ -161,7 +163,7 @@ const WebGLJourney = ({ stations }) => {
 			composer.dispose?.();
 			if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
 		};
-	}, [stations, n]);
+	}, [stations, n, mobile]);
 
 	return (
 		<section className="WebGLJourney" ref={outerRef} style={{ height: `${n * 70}vh` }}>

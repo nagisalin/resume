@@ -67,12 +67,18 @@ const landmarks = [
 		title: '地端 Edge AI × 即時影像',
 		description: `一台地端邊緣裝置，要即時分析數百路公開影像串流。卡最久的是算力：一邊跑物件偵測、一邊跑 VLM 寫摘要，單張 GPU 不夠。
 
-做法是自寫精簡推論路徑（在 GPU 上一次做完篩選與 NMS），再拆多行程分攤相機、讓 VLM 在 GPU 忙時讓位。最後做成一條龍：地端分析 → 雲端儀表 → AI 語音答詢 → WebXR 戰情牆，資料全程在地端去識別化，不回傳原始影像。`,
+做法是自寫精簡推論路徑（在 GPU 上一次做完篩選與 NMS），再拆多行程分攤相機、讓 VLM 在 GPU 忙時讓位。最後做成一條龍：地端分析 → 雲端儀表 → AI 語音答詢 → WebXR 戰情牆，全程只在地端處理，不回傳原始影像。`,
 	},
 ];
 
 const CrossDomain = () => {
 	const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
+	// 只有「不支援 WebGL」才退回靜態卡片；手機照樣跑捲動飛行（效能檔）
+	const [useStatic] = useState(() => {
+		if (typeof window === 'undefined') return true;
+		try { const c = document.createElement('canvas'); return !(c.getContext('webgl2') || c.getContext('webgl')); }
+		catch { return true; }
+	});
 	const [finaleRef, finaleVisible] = useScrollReveal();
 
 	useEffect(() => {
@@ -100,8 +106,8 @@ const CrossDomain = () => {
 				</div>
 			</section>
 
-			{isMobile ? (
-				<section key="cd-mobile" className="CrossDomainMobile">
+			{useStatic ? (
+				<section key="cd-static" className="CrossDomainMobile">
 					{landmarks.map((lm) => {
 						const Scene = lm.scene;
 						return (
@@ -118,7 +124,7 @@ const CrossDomain = () => {
 					})}
 				</section>
 			) : (
-				<WebGLJourney key="cd-desktop" stations={landmarks} />
+				<WebGLJourney key="cd-cinema" stations={landmarks} mobile={isMobile} />
 			)}
 
 			<section className="CrossDomainFinale" ref={finaleRef}>

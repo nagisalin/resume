@@ -31,6 +31,12 @@ const InfoScene = () => {
 	const introRef = useRef(null);
 	const skillsRef = useRef(null);
 	const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
+	// 只有「不支援 WebGL」才退回靜態堆疊版；手機照樣跑捲動 3D（用效能檔）
+	const [useStatic] = useState(() => {
+		if (typeof window === 'undefined') return true;
+		try { const c = document.createElement('canvas'); return !(c.getContext('webgl2') || c.getContext('webgl')); }
+		catch { return true; }
+	});
 
 	useEffect(() => {
 		const mq = window.matchMedia('(max-width: 1024px)');
@@ -41,12 +47,10 @@ const InfoScene = () => {
 	}, []);
 
 	useEffect(() => {
-		if (isMobile) return; // 手機走正常堆疊版，不跑 WebGL 分幕
+		if (useStatic) return; // 不支援 WebGL 才走靜態堆疊版
 		const mount = mountRef.current;
 		const outer = outerRef.current;
 		if (!mount || !outer) return;
-		const test = document.createElement('canvas');
-		if (!(test.getContext('webgl2') || test.getContext('webgl'))) return;
 
 		let width = mount.clientWidth;
 		let height = mount.clientHeight;
@@ -60,8 +64,8 @@ const InfoScene = () => {
 		const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 400);
 		camera.position.set(0, 0, 26);
 
-		// 星空
-		const starCount = 1400;
+		// 星空（手機砍半，省頂點與 overdraw）
+		const starCount = isMobile ? 700 : 1400;
 		const sp = new Float32Array(starCount * 3);
 		for (let i = 0; i < starCount; i++) {
 			sp[i * 3] = (Math.random() - 0.5) * 160;
@@ -75,13 +79,16 @@ const InfoScene = () => {
 
 		const composer = new EffectComposer(renderer);
 		composer.addPass(new RenderPass(scene, camera));
-		composer.addPass(new UnrealBloomPass(new THREE.Vector2(width / 2, height / 2), 0.4, 0.5, 0.4));
+		const bloomRes = isMobile ? 3 : 2; // 手機用 1/3 解析度泛光（fill-rate 是手機最大成本）
+		const bloom = new UnrealBloomPass(new THREE.Vector2(width / bloomRes, height / bloomRes), isMobile ? 0.34 : 0.4, 0.5, 0.4);
+		composer.addPass(bloom);
 
 		const onResize = () => {
 			width = mount.clientWidth;
 			height = mount.clientHeight;
 			renderer.setSize(width, height);
 			composer.setSize(width, height);
+			bloom.setSize(width / bloomRes, height / bloomRes); // setSize 後重設，維持降解析度
 			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
 		};
@@ -130,12 +137,12 @@ const InfoScene = () => {
 			composer.dispose?.();
 			if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
 		};
-	}, [isMobile]);
+	}, [useStatic, isMobile]);
 
-	// ---- 手機版：正常堆疊，不分幕、不跑 WebGL ----
-	if (isMobile) {
+	// ---- 靜態退回版：僅在不支援 WebGL 時使用（堆疊、不分幕）----
+	if (useStatic) {
 		return (
-			<section id="Information" key="info-mobile" className="InfoScene InfoScene--mobile">
+			<section id="Information" key="info-static" className="InfoScene InfoScene--mobile">
 				<div className="InfoM-hero">
 					<div className="InfoScene-avatars">
 						<img src={Avatar1} alt="洪世桓" className="InfoScene-avatar" />
@@ -145,7 +152,11 @@ const InfoScene = () => {
 					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
 					<div className="InfoScene-tagline">{`「哪都能做」工程師
 這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`}</div>
-					<div className="InfoScene-contact">🏠 Taipei　📬 getsulin@gmail.com　🏫 臺師大 數學系</div>
+					<div className="InfoScene-contact">
+						<span className="nb">🏠 Taipei</span>
+						<span className="nb">📬 getsulin@gmail.com</span>
+						<span className="nb">🏫 臺師大 數學系</span>
+					</div>
 				</div>
 
 				<div className="InfoM-block">
@@ -169,7 +180,7 @@ const InfoScene = () => {
 	}
 
 	return (
-		<section id="Information" key="info-desktop" className="InfoScene" ref={outerRef}>
+		<section id="Information" key="info-cinema" className="InfoScene" ref={outerRef}>
 			<div className="InfoScene-sticky">
 				<div className="InfoScene-canvas" ref={mountRef} />
 
@@ -183,7 +194,11 @@ const InfoScene = () => {
 					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
 					<div className="InfoScene-tagline">{`「哪都能做」工程師
 這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`}</div>
-					<div className="InfoScene-contact">🏠 Taipei　📬 getsulin@gmail.com　🏫 臺師大 數學系</div>
+					<div className="InfoScene-contact">
+						<span className="nb">🏠 Taipei</span>
+						<span className="nb">📬 getsulin@gmail.com</span>
+						<span className="nb">🏫 臺師大 數學系</span>
+					</div>
 					<div className="InfoScene-scrollhint">往下捲 ↓</div>
 				</div>
 
