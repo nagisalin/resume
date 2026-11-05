@@ -198,3 +198,20 @@
 		.InfoScene-skills .InfoScene-skillgrid { grid-template-columns: 1fr; max-width: 360px; }
 	}
 }
+
+// 技能卡內容：一致的技術標籤（chip），不再用「·」分隔以免點點跑到行首
+.InfoScene-skillcard-d {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 8px;
+}
+.InfoScene-chip {
+	white-space: nowrap;
+	font-size: 13px;
+	line-height: 1.4;
+	color: #c3c9d6;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 6px;
+	padding: 3px 9px;
+}

@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import WebGLJourney from './WebGLJourney';
 import { FrontendScene, BackendScene, CrawlerScene, UnityScene, EdgeAIScene } from './Scenes';
 import { useScrollReveal } from 'hooks/useScroll';
+import { glue } from 'shared/text';
 
 import '../SectionContainer.scss';
 import './CrossDomain.scss';
@@ -118,7 +119,7 @@ const CrossDomain = () => {
 								<div className="CrossDomainMobile-Case-Label">{lm.label}</div>
 								<div className="CrossDomainMobile-Case-Tag">{lm.tag}</div>
 								<div className="CrossDomainMobile-Case-Title">{lm.title}</div>
-								<div className="CrossDomainMobile-Case-Desc">{lm.description}</div>
+								<div className="CrossDomainMobile-Case-Desc">{glue(lm.description)}</div>
 							</div>
 						);
 					})}

@@ -7,18 +7,20 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import Avatar1 from 'design/images/avatar1.png';
 import Avatar2 from 'design/images/avatar2.jpeg';
 import { makeStarTexture } from 'shared/starTexture';
+import { glue } from 'shared/text';
 import './InfoScene.scss';
 
 const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
 const smooth = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
 
+// 技能卡：一律用「技術標籤」陣列，風格一致（不再混散句與年份；年份/新舊在「經歷」「跨領域」已交代）
 const SKILLS = [
-	['前端 React / Vue', '本行·多套企業後台與儀表板'],
-	['後端 Service', '2026 進入·Node/Express·MongoDB·Docker'],
-	['雲端 / 部署', 'AWS EC2·GoDaddy·Docker·Vercel'],
-	['Python / 爬蟲', '自動化蒐集與清洗資料'],
-	['Unity XR / C#', '2026 進入·Quest 3 實機'],
-	['Edge AI / 電腦視覺', '地端即時影像·GPU 推論'],
+	['前端 React / Vue', ['React', 'Vue', 'RWD', '報表', 'i18n']],
+	['後端 Service', ['Node', 'Express', 'MongoDB', 'Docker']],
+	['雲端 / 部署', ['AWS EC2', 'GoDaddy', 'Docker', 'Vercel']],
+	['Python / 爬蟲', ['Python', '爬蟲', '排程自動化']],
+	['Unity XR / C#', ['Unity', 'C#', 'Meta Quest 3', 'WebXR']],
+	['Edge AI / 電腦視覺', ['物件偵測', 'VLM', 'GPU 推論']],
 ];
 const ABOUT = `一隻從大學開始接觸程式的史萊姆。數學系出身，比起死記語法，更吃的是看文件、問 AI、試錯，然後把想法硬做成畫面的能力。
 
@@ -150,8 +152,8 @@ const InfoScene = () => {
 					</div>
 					<div className="InfoScene-name">洪世桓</div>
 					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
-					<div className="InfoScene-tagline">{`「哪都能做」工程師
-這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`}</div>
+					<div className="InfoScene-tagline">{glue(`「哪都能做」工程師
+這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`)}</div>
 					<div className="InfoScene-contact">
 						<span className="nb">🏠 Taipei</span>
 						<span className="nb">📬 getsulin@gmail.com</span>
@@ -161,7 +163,7 @@ const InfoScene = () => {
 
 				<div className="InfoM-block">
 					<div className="InfoScene-panel-kicker">ABOUT</div>
-					<div className="InfoScene-panel-text">{ABOUT}</div>
+					<div className="InfoScene-panel-text">{glue(ABOUT)}</div>
 				</div>
 
 				<div className="InfoM-block">
@@ -170,7 +172,7 @@ const InfoScene = () => {
 						{SKILLS.map(([t, d]) => (
 							<div key={t} className="InfoScene-skillcard">
 								<div className="InfoScene-skillcard-t">{t}</div>
-								<div className="InfoScene-skillcard-d">{d}</div>
+								<div className="InfoScene-skillcard-d">{d.map((x) => <span key={x} className="InfoScene-chip">{x}</span>)}</div>
 							</div>
 						))}
 					</div>
@@ -192,8 +194,8 @@ const InfoScene = () => {
 					</div>
 					<div className="InfoScene-name">洪世桓</div>
 					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
-					<div className="InfoScene-tagline">{`「哪都能做」工程師
-這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`}</div>
+					<div className="InfoScene-tagline">{glue(`「哪都能做」工程師
+這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`)}</div>
 					<div className="InfoScene-contact">
 						<span className="nb">🏠 Taipei</span>
 						<span className="nb">📬 getsulin@gmail.com</span>
@@ -205,7 +207,7 @@ const InfoScene = () => {
 				{/* 第二幕：自介 */}
 				<div className="InfoScene-panel InfoScene-intro" ref={introRef}>
 					<div className="InfoScene-panel-kicker">ABOUT</div>
-					<div className="InfoScene-panel-text">{ABOUT}</div>
+					<div className="InfoScene-panel-text">{glue(ABOUT)}</div>
 				</div>
 
 				{/* 第三幕：技能 */}
@@ -215,7 +217,7 @@ const InfoScene = () => {
 						{SKILLS.map(([t, d]) => (
 							<div key={t} className="InfoScene-skillcard">
 								<div className="InfoScene-skillcard-t">{t}</div>
-								<div className="InfoScene-skillcard-d">{d}</div>
+								<div className="InfoScene-skillcard-d">{d.map((x) => <span key={x} className="InfoScene-chip">{x}</span>)}</div>
 							</div>
 						))}
 					</div>

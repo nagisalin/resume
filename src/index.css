@@ -4,6 +4,8 @@
 
 body {
 	margin: 0;
+	/* 中文斷行：只在標點／空白處換行，詞不被拆半（如「文件」不會變成 文／件）；keep-all 不影響英文 */
+	word-break: keep-all;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
 		'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;

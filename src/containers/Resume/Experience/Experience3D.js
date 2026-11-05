@@ -4,6 +4,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { makeStarTexture } from 'shared/starTexture';
+import { glue } from 'shared/text';
 import './Experience3D.scss';
 
 const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
@@ -24,7 +25,7 @@ const rawStops = [
 	{
 		key: 'fe2', year: '2023 – 2024', color: '#a78bfa',
 		role: 'Front-End Engineer', org: '太平洋建設 (蝦米智慧)',
-		desc: `專案型前端，一人從開版、RWD、Webpack 到部署於 IIS 上線；製作多個官網與內部系統（停車場後台、ISMS、OA、KIOSK 介面），並負責專案的資安黑白箱弱掃。`,
+		desc: `專案型前端，一人從開版、RWD、Webpack 到部署於 IIS 上線；製作多個官網與內部系統（停車場後台、ISMS、OA、KIOSK 介面），並負責修復專案的資安黑白箱弱掃。`,
 	},
 	{
 		key: 'ade', year: '2024 – 至今', color: '#34d399',
@@ -210,7 +211,7 @@ const Experience3D = () => {
 						{s.year && <div className="Exp3D-m-year">{s.year}</div>}
 						{s.role && <div className="Exp3D-m-role">{s.role}</div>}
 						{s.org !== 'VALUE' && <div className="Exp3D-m-org">{s.org}</div>}
-						<div className="Exp3D-m-desc">{s.desc}</div>
+						<div className="Exp3D-m-desc">{glue(s.desc)}</div>
 						{s.slogan && <div className="Exp3D-m-slogan">{s.slogan}</div>}
 					</div>
 				))}
@@ -233,7 +234,7 @@ const Experience3D = () => {
 						{s.isValue && <div className="Exp3D-panel-kicker">VALUE</div>}
 						{s.role && <div className="Exp3D-panel-role">{s.role}</div>}
 						{s.org !== 'VALUE' && <div className="Exp3D-panel-org">{s.org}</div>}
-						<div className="Exp3D-panel-desc">{s.desc}</div>
+						<div className="Exp3D-panel-desc">{glue(s.desc)}</div>
 						{s.slogan && <div className="Exp3D-panel-slogan">{s.slogan}</div>}
 					</div>
 				))}

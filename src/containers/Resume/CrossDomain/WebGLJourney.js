@@ -5,6 +5,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { buildModel } from './models';
 import { makeStarTexture } from 'shared/starTexture';
+import { glue } from 'shared/text';
 import './WebGLJourney.scss';
 
 const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
@@ -179,7 +180,7 @@ const WebGLJourney = ({ stations, mobile = false }) => {
 						<div className="WebGLJourney-panel-en">{s.en}</div>
 						<div className="WebGLJourney-panel-tag">{s.tag}</div>
 						<div className="WebGLJourney-panel-title">{s.title}</div>
-						<div className="WebGLJourney-panel-desc">{s.description}</div>
+						<div className="WebGLJourney-panel-desc">{glue(s.description)}</div>
 					</div>
 				))}
 
