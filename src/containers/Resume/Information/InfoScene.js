@@ -147,10 +147,10 @@ const InfoScene = () => {
 			<section id="Information" key="info-static" className="InfoScene InfoScene--mobile">
 				<div className="InfoM-hero">
 					<div className="InfoScene-avatars">
-						<img src={Avatar1} alt="洪世桓" className="InfoScene-avatar" />
+						<img src={Avatar1} alt="史萊姆" className="InfoScene-avatar" />
 						<img src={Avatar2} alt="史萊姆 logo" className="InfoScene-avatar InfoScene-avatar--slime" />
 					</div>
-					<div className="InfoScene-name">洪世桓</div>
+					<div className="InfoScene-name">史萊姆</div>
 					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
 					<div className="InfoScene-tagline">{glue(`「哪都能做」工程師
 這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`)}</div>
@@ -189,10 +189,10 @@ const InfoScene = () => {
 				{/* 第一幕：身份 */}
 				<div className="InfoScene-hero" ref={heroRef}>
 					<div className="InfoScene-avatars">
-						<img src={Avatar1} alt="洪世桓" className="InfoScene-avatar" />
+						<img src={Avatar1} alt="史萊姆" className="InfoScene-avatar" />
 						<img src={Avatar2} alt="史萊姆 logo" className="InfoScene-avatar InfoScene-avatar--slime" />
 					</div>
-					<div className="InfoScene-name">洪世桓</div>
+					<div className="InfoScene-name">史萊姆</div>
 					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
 					<div className="InfoScene-tagline">{glue(`「哪都能做」工程師
 這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`)}</div>
