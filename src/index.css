@@ -2,6 +2,11 @@
 	box-sizing: border-box;
 }
 
+/* 全站最底層底色設暗，避免 iOS Safari 回彈捲動(rubber-band)露出白色 body 背景 */
+html, body {
+	background: #05060a;
+}
+
 body {
 	margin: 0;
 	/* 中文用瀏覽器預設斷行（可任意處換行、不會爆版）；長英文字串也強制斷行避免溢出。
