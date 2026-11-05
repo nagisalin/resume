@@ -4,8 +4,10 @@
 
 body {
 	margin: 0;
-	/* 中文斷行：只在標點／空白處換行，詞不被拆半（如「文件」不會變成 文／件）；keep-all 不影響英文 */
-	word-break: keep-all;
+	/* 中文用瀏覽器預設斷行（可任意處換行、不會爆版）；長英文字串也強制斷行避免溢出。
+	   不可用 word-break:keep-all —— Safari 下它會讓整段中文不換行、衝出畫面。
+	   需要整塊不拆的詞（如「臺師大 數學系」「React / Vue」）已用 .nb nowrap 或 glue() 不斷行空格個別處理。 */
+	overflow-wrap: break-word;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
 		'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
