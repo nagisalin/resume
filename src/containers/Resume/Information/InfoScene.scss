@@ -94,10 +94,20 @@
 	.InfoM-content {
 		position: relative;
 		z-index: 1;
-		padding: 72px 22px 56px;
+		padding: 0 22px;
 		display: flex;
 		flex-direction: column;
-		gap: 42px;
+		gap: 0;
+	}
+
+	// 每一幕吃滿一個螢幕高、內容置中 → 一幕幕沉浸式捲過（像原本的 cinema，但靠捲動而非疊層）
+	.InfoM-hero,
+	.InfoM-block {
+		min-height: 88vh;
+		min-height: 88svh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	.InfoM-hero {
