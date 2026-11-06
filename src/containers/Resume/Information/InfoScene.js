@@ -28,6 +28,7 @@ const ABOUT = `一隻從大學開始接觸程式的史萊姆。數學系出身�
 
 const InfoScene = () => {
 	const mountRef = useRef(null);
+	const mobileMountRef = useRef(null);
 	const outerRef = useRef(null);
 	const heroRef = useRef(null);
 	const introRef = useRef(null);
@@ -49,7 +50,7 @@ const InfoScene = () => {
 	}, []);
 
 	useEffect(() => {
-		if (useStatic) return; // 不支援 WebGL 才走靜態堆疊版
+		if (useStatic || isMobile) return; // 只有桌機跑分幕 cinema；手機走 sticky 背景 + 正常流文字
 		const mount = mountRef.current;
 		const outer = outerRef.current;
 		if (!mount || !outer) return;
@@ -141,46 +142,130 @@ const InfoScene = () => {
 		};
 	}, [useStatic, isMobile]);
 
-	// ---- 靜態退回版：僅在不支援 WebGL 時使用（堆疊、不分幕）----
-	if (useStatic) {
-		return (
-			<section id="Information" key="info-static" className="InfoScene InfoScene--mobile">
-				<div className="InfoM-hero">
-					<div className="InfoScene-avatars">
-						<img src={Avatar1} alt="史萊姆" className="InfoScene-avatar" />
-						<img src={Avatar2} alt="史萊姆 logo" className="InfoScene-avatar InfoScene-avatar--slime" />
-					</div>
-					<div className="InfoScene-name">史萊姆</div>
-					<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
-					<div className="InfoScene-tagline">{glue(`「哪都能做」工程師
+	// ---- 手機（有 WebGL）：只跑背景星空；文字走正常流，不碰 opacity ----
+	useEffect(() => {
+		if (useStatic || !isMobile) return;
+		const mount = mobileMountRef.current;
+		const outer = outerRef.current;
+		if (!mount || !outer) return;
+
+		let width = mount.clientWidth;
+		let height = mount.clientHeight;
+		const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+		renderer.setPixelRatio(1);
+		renderer.setSize(width, height);
+		mount.appendChild(renderer.domElement);
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 400);
+		camera.position.set(0, 0, 24);
+
+		const starCount = 600;
+		const sp = new Float32Array(starCount * 3);
+		for (let i = 0; i < starCount; i++) {
+			sp[i * 3] = (Math.random() - 0.5) * 170;
+			sp[i * 3 + 1] = (Math.random() - 0.5) * 170;
+			sp[i * 3 + 2] = -Math.random() * 140;
+		}
+		const g = new THREE.BufferGeometry();
+		g.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+		const m = new THREE.PointsMaterial({ color: 0x9fd8ff, size: 1.7, map: makeStarTexture(), transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
+		scene.add(new THREE.Points(g, m));
+
+		const onResize = () => {
+			width = mount.clientWidth; height = mount.clientHeight;
+			renderer.setSize(width, height);
+			camera.aspect = width / height; camera.updateProjectionMatrix();
+		};
+		window.addEventListener('resize', onResize);
+
+		let visible = true;
+		const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0, rootMargin: '200px 0px' });
+		io.observe(outer);
+
+		let raf = 0;
+		const clock = new THREE.Clock();
+		const animate = () => {
+			raf = requestAnimationFrame(animate);
+			if (!visible) return;
+			const t = clock.getElapsedTime();
+			// 相機隨捲動緩推 + 漂移；就算手機慣性捲動暫停 JS，背景只是凍一下，不影響文字
+			const rect = outer.getBoundingClientRect();
+			const total = rect.height - window.innerHeight;
+			const prog = total > 0 ? clamp(-rect.top / total, 0, 1) : 0;
+			camera.position.z = 24 - prog * 10;
+			camera.position.x = Math.sin(t * 0.2) * 1.0;
+			camera.position.y = Math.cos(t * 0.18) * 0.7;
+			camera.lookAt(0, 0, 0);
+			renderer.render(scene, camera);
+		};
+		raf = requestAnimationFrame(animate);
+
+		return () => {
+			cancelAnimationFrame(raf);
+			io.disconnect();
+			window.removeEventListener('resize', onResize);
+			renderer.dispose();
+			g.dispose();
+			m.dispose();
+			if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
+		};
+	}, [useStatic, isMobile]);
+
+	// 手機與無-WebGL 共用的堆疊內容（正常文件流，物理上不可能重疊）
+	const stackedContent = (
+		<>
+			<div className="InfoM-hero">
+				<div className="InfoScene-avatars">
+					<img src={Avatar1} alt="史萊姆" className="InfoScene-avatar" />
+					<img src={Avatar2} alt="史萊姆 logo" className="InfoScene-avatar InfoScene-avatar--slime" />
+				</div>
+				<div className="InfoScene-name">史萊姆</div>
+				<div className="InfoScene-role">ADE · Any-Domain Engineer</div>
+				<div className="InfoScene-tagline">{glue(`「哪都能做」工程師
 這年頭 vibe coding，工程師好像都被逼成 Any-Domain —— 什麼都得做得出來 XD`)}</div>
-					<div className="InfoScene-contact">
-						<span className="nb">🏠 Taipei</span>
-						<span className="nb">📬 getsulin@gmail.com</span>
-						<span className="nb">🏫 臺師大 數學系</span>
-					</div>
+				<div className="InfoScene-contact">
+					<span className="nb">🏠 Taipei</span>
+					<span className="nb">📬 getsulin@gmail.com</span>
+					<span className="nb">🏫 臺師大 數學系</span>
 				</div>
+			</div>
 
-				<div className="InfoM-block">
-					<div className="InfoScene-panel-kicker">ABOUT</div>
-					<div className="InfoScene-panel-text">{glue(ABOUT)}</div>
-				</div>
+			<div className="InfoM-block">
+				<div className="InfoScene-panel-kicker">ABOUT</div>
+				<div className="InfoScene-panel-text">{glue(ABOUT)}</div>
+			</div>
 
-				<div className="InfoM-block">
-					<div className="InfoScene-panel-kicker">SKILLS</div>
-					<div className="InfoScene-skillgrid">
-						{SKILLS.map(([t, d]) => (
-							<div key={t} className="InfoScene-skillcard">
-								<div className="InfoScene-skillcard-t">{t}</div>
-								<div className="InfoScene-skillcard-d">{d.map((x) => <span key={x} className="InfoScene-chip">{x}</span>)}</div>
-							</div>
-						))}
-					</div>
+			<div className="InfoM-block">
+				<div className="InfoScene-panel-kicker">SKILLS</div>
+				<div className="InfoScene-skillgrid">
+					{SKILLS.map(([t, d]) => (
+						<div key={t} className="InfoScene-skillcard">
+							<div className="InfoScene-skillcard-t">{t}</div>
+							<div className="InfoScene-skillcard-d">{d.map((x) => <span key={x} className="InfoScene-chip">{x}</span>)}</div>
+						</div>
+					))}
 				</div>
+			</div>
+		</>
+	);
+
+	// 無 WebGL：純靜態堆疊（深色實底）
+	if (useStatic) {
+		return <section id="Information" key="info-static" className="InfoScene InfoScene--mobile">{stackedContent}</section>;
+	}
+
+	// 手機（有 WebGL）：sticky 3D 星空背景 + 正常流文字
+	if (isMobile) {
+		return (
+			<section id="Information" key="info-mobile" className="InfoScene InfoScene--cinemaM" ref={outerRef}>
+				<div className="InfoM-bg"><div className="InfoM-bg-canvas" ref={mobileMountRef} /></div>
+				<div className="InfoM-content">{stackedContent}</div>
 			</section>
 		);
 	}
 
+	// 桌機：分幕 cinema
 	return (
 		<section id="Information" key="info-cinema" className="InfoScene" ref={outerRef}>
 			<div className="InfoScene-sticky">

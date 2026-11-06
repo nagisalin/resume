@@ -54,6 +54,84 @@
 	}
 }
 
+// ---- 手機（有 WebGL）：sticky 3D 星空背景 + 正常流文字（文字絕不重疊）----
+.InfoScene.InfoScene--cinemaM {
+	position: relative;
+	height: auto;
+	min-height: auto;
+	display: block;
+	background: #05060a;
+	color: #fff;
+
+	// sticky 背景：margin-bottom 負值 → 不佔垂直空間，文字在它上面以正常流捲動
+	.InfoM-bg {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		height: 100svh;
+		margin-bottom: -100vh;
+		margin-bottom: -100svh;
+		z-index: 0;
+		overflow: hidden;
+		pointer-events: none;
+
+		.InfoM-bg-canvas {
+			position: absolute;
+			inset: 0;
+			canvas { display: block; width: 100% !important; height: 100% !important; }
+		}
+	}
+
+	.InfoM-content {
+		position: relative;
+		z-index: 1;
+		padding: 72px 22px 56px;
+		display: flex;
+		flex-direction: column;
+		gap: 42px;
+	}
+
+	.InfoM-hero {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+
+		.InfoScene-avatars { display: flex; gap: 14px; align-items: center; }
+		.InfoScene-avatar {
+			width: 82px; height: 82px; border-radius: 50%;
+			border: 2px solid #58d68d; object-fit: cover;
+			box-shadow: 0 0 24px rgba(88, 214, 141, 0.45);
+		}
+		.InfoScene-avatar--slime { background: #fff; }
+		.InfoScene-name { margin-top: 16px; font-size: 34px; font-weight: 900; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85); }
+		.InfoScene-role { margin-top: 6px; font-size: 19px; font-weight: 700; color: #58d68d; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85); }
+		.InfoScene-tagline { margin-top: 14px; white-space: pre-wrap; font-size: 15px; line-height: 1.7; color: #d7dbe6; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9); }
+		.InfoScene-contact { margin-top: 16px; font-size: 14px; color: #c3c8d4; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9); }
+	}
+
+	// 文字區塊墊半透明深色底，在移動的 3D 上也清楚可讀
+	.InfoM-block {
+		background: rgba(5, 7, 12, 0.72);
+		border: 1px solid rgba(255, 255, 255, 0.07);
+		border-radius: 16px;
+		padding: 22px 20px;
+		backdrop-filter: blur(3px);
+
+		.InfoScene-panel-kicker { font-size: 14px; letter-spacing: 4px; color: #58d68d; margin-bottom: 14px; text-align: center; }
+		.InfoScene-panel-text { white-space: pre-wrap; font-size: 16px; line-height: 1.9; color: #e3e6ef; }
+		.InfoScene-skillgrid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+		.InfoScene-skillcard {
+			background: rgba(16, 22, 20, 0.6);
+			border: 1px solid rgba(88, 214, 141, 0.4);
+			border-radius: 14px;
+			padding: 16px 18px;
+			.InfoScene-skillcard-t { font-size: 17px; font-weight: 800; color: #fff; }
+			.InfoScene-skillcard-d { margin-top: 6px; font-size: 14px; line-height: 1.6; color: #b9c0cf; }
+		}
+	}
+}
+
 .InfoScene {
 	position: relative;
 	height: 320vh;
