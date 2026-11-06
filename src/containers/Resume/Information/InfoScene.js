@@ -212,10 +212,24 @@ const InfoScene = () => {
 		};
 	}, [useStatic, isMobile]);
 
+	// 手機（有 WebGL）：每塊滑進畫面時各自淡入上浮一次（進場動畫，但各佔各的位置→不可能重疊）
+	useEffect(() => {
+		if (useStatic || !isMobile) return;
+		const sec = outerRef.current;
+		if (!sec) return;
+		sec.classList.add('sr-ready'); // 只有 JS 跑了才套「初始隱藏」，JS 壞掉時內容照樣看得到
+		const items = sec.querySelectorAll('.sr');
+		const io = new IntersectionObserver((entries) => {
+			entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('sr-in'); io.unobserve(e.target); } });
+		}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+		items.forEach((el) => io.observe(el));
+		return () => { io.disconnect(); sec.classList.remove('sr-ready'); };
+	}, [useStatic, isMobile]);
+
 	// 手機與無-WebGL 共用的堆疊內容（正常文件流，物理上不可能重疊）
 	const stackedContent = (
 		<>
-			<div className="InfoM-hero">
+			<div className="InfoM-hero sr">
 				<div className="InfoScene-avatars">
 					<img src={Avatar1} alt="史萊姆" className="InfoScene-avatar" />
 					<img src={Avatar2} alt="史萊姆 logo" className="InfoScene-avatar InfoScene-avatar--slime" />
@@ -231,12 +245,12 @@ const InfoScene = () => {
 				</div>
 			</div>
 
-			<div className="InfoM-block">
+			<div className="InfoM-block sr">
 				<div className="InfoScene-panel-kicker">ABOUT</div>
 				<div className="InfoScene-panel-text">{glue(ABOUT)}</div>
 			</div>
 
-			<div className="InfoM-block">
+			<div className="InfoM-block sr">
 				<div className="InfoScene-panel-kicker">SKILLS</div>
 				<div className="InfoScene-skillgrid">
 					{SKILLS.map(([t, d]) => (

@@ -63,6 +63,15 @@
 	background: #05060a;
 	color: #fff;
 
+	// 進場動畫：每塊滑進畫面才「淡入 + 上浮」一次。各塊各佔各的位置 → 動歸動、永遠不重疊。
+	// 初始隱藏只在 JS 加了 .sr-ready 時才套用 → JS 壞掉時內容照樣看得見（漸進增強）。
+	.sr { transition: opacity 0.7s ease, transform 0.7s ease; }
+	&.sr-ready .sr { opacity: 0; transform: translateY(26px); }
+	&.sr-ready .sr.sr-in { opacity: 1; transform: none; }
+	@media (prefers-reduced-motion: reduce) {
+		&.sr-ready .sr { opacity: 1; transform: none; transition: none; }
+	}
+
 	// sticky 背景：margin-bottom 負值 → 不佔垂直空間，文字在它上面以正常流捲動
 	.InfoM-bg {
 		position: sticky;
